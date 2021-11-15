@@ -5,8 +5,15 @@ from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 
 
-def hello():
-    print('This is hello command.')
+def help(args):
+    #print('This is hello command.')
+    if args == []:
+        print("1. ls\t\tList all the file and folders.\n\t-l\tList all teh file and folders in a detailed manner.\n\t-al\tList the hidden files along wiht remaining files.")
+        print("2. rm [path]\tRemove the files in the given path.")
+        print("7. quit/exit\tTo stop the execution of the filesystem.")
+    else:
+        print(
+            f"'help {' '.join(args)}' command not found\nEnter 'help' to know more..")
 
 
 def cat():
@@ -49,8 +56,15 @@ def ls(args):
     return 0
 
 
-def rm():
-    print('This is rm command.')
+def rm(args):
+    #print('This is rm command.')
+    for i in args:
+        if os.path.isfile(i):
+            os.remove(i)
+        elif os.path.isdir(i):
+            print(f"rm: cannot remove '{i}': Is a directory")
+        else:
+            print(f"rm: cannot remove '{i}': No such file or directory")
 
 
 def rmdir():
@@ -62,18 +76,33 @@ def mkdir():
 
 
 def quit(args):
-    return -1
+    if args == []:
+        print('\nGoodbye!!')
+        return -1
+    else:
+        print(
+            f"'quit {' '.join(args)}' not found!!\n Try 'quit' to quit the fs")
+
+
+def exit(args):
+    if args == []:
+        print('\nGoodbye!!')
+        return -1
+    else:
+        print(
+            f"'exit {' '.join(args)}' not found!!\n Try 'exit' to quit the fs")
 
 
 comm = {
-    'hello': hello,
+    'help': help,
     'cat': cat,
     'put': put,
     'ls': ls,
     'rm': rm,
     'rmdir': rmdir,
     'mkdir': mkdir,
-    'quit': quit
+    'quit': quit,
+    'exit': exit
 }
 
 
