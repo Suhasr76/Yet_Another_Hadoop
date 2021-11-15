@@ -1,3 +1,5 @@
+import os
+import subprocess
 from prompt_toolkit import prompt
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
@@ -15,8 +17,36 @@ def put():
     print('This is put command.')
 
 
-def ls():
-    print('This is ls command.')
+def ls(args):
+    #print('This is ls command.')
+    temp = 0
+    k = 0
+    if args != []:
+        k = 1
+        temp = subprocess.Popen(['ls', args[0]], stdout=subprocess.PIPE)
+    else:
+        temp = subprocess.Popen('ls', stdout=subprocess.PIPE)
+    output = str(temp.communicate())
+    output = output.split('\'')
+    output = output[1].split('\\')
+    res = []
+    i = 0
+    for line in output:
+        if k == 1:
+            if i != 0:
+                res.append(line[1:])
+            else:
+                res.append(line)
+            i += 1
+        else:
+            if i == 0:
+                res.append(line)
+            elif i < len(output)-1:
+                res.append(line[1:])
+            i += 1
+    for i in res:
+        print(i)
+    return 0
 
 
 def rm():
@@ -31,7 +61,7 @@ def mkdir():
     print('This is mkdir command.')
 
 
-def quit():
+def quit(args):
     return -1
 
 
@@ -47,9 +77,9 @@ comm = {
 }
 
 
-def err(fun):
+def err(fun, args):
     try:
-        val = fun()
+        val = fun(args)
     except Exception as e:
         return e
     else:
@@ -57,42 +87,13 @@ def err(fun):
 
 
 while 1:
-    user_input = prompt('>',
-                        history=FileHistory('history.txt'),
-                        auto_suggest=AutoSuggestFromHistory(),
-                        )
+    user_input = prompt('>')
 
     try:
-        command = comm[user_input]
-        s = err(command)
-        if s == -1:
+        userInputList = user_input.split(' ')
+        command = comm[userInputList[0]]
+        val = err(command, userInputList[1:])
+        if val == -1:
             break
     except Exception as e:
         print(f"{e} is not a proper command\nEnter proper command!!")
-
-
-# if __name__ == '__main__':
-
-#     while 1:
-#         user_input = prompt('>',
-#                             history=FileHistory('history.txt'),
-#                             auto_suggest=AutoSuggestFromHistory(),
-#                         )
-#         command = comm[user_input]
-#         command()
-#         print(user_input)
-
-
-# from cmd import Cmd
-
-# class MyPrompt(Cmd):
-#    def do_exit(self, inp):
-#         print("Bye")
-#         return True
-
-#    def do_add(self, inp):
-#         print(type(inp))
-#         print("Adding '{}'".format(inp))
-
-# MyPrompt().cmdloop()
-# print("after")
