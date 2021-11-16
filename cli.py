@@ -1,6 +1,6 @@
 import os
 import subprocess
-from prompt_toolkit import prompt
+from prompt_toolkit import output, prompt
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 
@@ -16,48 +16,53 @@ def help(args):
             f"'help {' '.join(args)}' command not found\nEnter 'help' to know more..")
 
 
-def cat():
-    print('This is cat command.')
+def cat(args):
+
+    if args == []:
+        print("cat: no arguments specified")
+        return
+    temp = subprocess.Popen(['cat', args[0]], stdout=subprocess.PIPE)
+    try:
+        output = str(temp.communicate())
+    except Exception as e: print(e)
+
+    output = output.split('\'')
+    output = output[1].split('\\n')
+    # print(temp.stdout)
+    # print(output,type(output))
+    for i in output:
+        print(i)
+
 
 
 def put():
+
     print('This is put command.')
 
 
+
 def ls(args):
-    #print('This is ls command.')
     temp = 0
-    k = 0
     if args != []:
-        k = 1
         temp = subprocess.Popen(['ls', args[0]], stdout=subprocess.PIPE)
     else:
         temp = subprocess.Popen('ls', stdout=subprocess.PIPE)
     output = str(temp.communicate())
     output = output.split('\'')
-    output = output[1].split('\\')
+    output = output[1].split('\\n')
     res = []
-    i = 0
     for line in output:
-        if k == 1:
-            if i != 0:
-                res.append(line[1:])
-            else:
-                res.append(line)
-            i += 1
-        else:
-            if i == 0:
-                res.append(line)
-            elif i < len(output)-1:
-                res.append(line[1:])
-            i += 1
+        res.append(line)
+
     for i in res:
         print(i)
     return 0
 
 
 def rm(args):
-    #print('This is rm command.')
+    if args==[]:
+        print("rm: specify name(s) of file(s) to remove")
+        return
     for i in args:
         if os.path.isfile(i):
             os.remove(i)
@@ -67,12 +72,28 @@ def rm(args):
             print(f"rm: cannot remove '{i}': No such file or directory")
 
 
-def rmdir():
-    print('This is rmdir command.')
+def rmdir(args):
+    if args==[]:
+        print("rmdir: specify name(s) of folder(s) to remove")
+        return
+    for i in args:
+        if os.path.isdir(i):
+            os.rmdir(i)
+        elif os.path.isfile(i):
+            print(f"rmdir: failed to remove '{i}': Not a directory")
+        else:
+            print(f"rmdir: failed to remove '{i}': No such file or directory")
 
 
-def mkdir():
-    print('This is mkdir command.')
+def mkdir(args):
+    if args==[]:
+        print("mkdir: specify name(s) of folder(s) to create")
+        return
+    for i in args:
+        try:
+            os.mkdir(i)
+        except:
+            print(f"mkdir: cannot create directory '{i}': File exists")
 
 
 def quit(args):
