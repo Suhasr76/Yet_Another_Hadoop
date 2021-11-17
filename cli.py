@@ -8,8 +8,11 @@ from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 def help(args):
     #print('This is hello command.')
     if args == []:
-        print("1. ls\t\tList all the file and folders.\n\t-l\tList all teh file and folders in a detailed manner.\n\t-al\tList the hidden files along wiht remaining files.")
-        print("2. rm [path]\tRemove the files in the given path.")
+        print("1. ls\t\tList all the file and folders.\n\t-l\tList all the file and folders in a detailed manner.\n\t-al\tList the hidden files along wiht remaining files.")
+        print("2. cat [filename]\tDisplay the contents of the file.")
+        print("2. rm [filename]\tRemove the files in the given path.")
+        print("3. rmdir [filename]\tRemove the specified directory.")
+        print("4. mkdir [filename]\tCreate directory in the specified path.")
         print("7. quit/exit\tTo stop the execution of the filesystem.")
     else:
         print(
@@ -24,7 +27,8 @@ def cat(args):
     temp = subprocess.Popen(['cat', args[0]], stdout=subprocess.PIPE)
     try:
         output = str(temp.communicate())
-    except Exception as e: print(e)
+    except Exception as e:
+        print(e)
 
     output = output.split('\'')
     output = output[1].split('\\n')
@@ -34,11 +38,9 @@ def cat(args):
         print(i)
 
 
-
 def put():
 
     print('This is put command.')
-
 
 
 def ls(args):
@@ -60,7 +62,7 @@ def ls(args):
 
 
 def rm(args):
-    if args==[]:
+    if args == []:
         print("rm: specify name(s) of file(s) to remove")
         return
     for i in args:
@@ -73,7 +75,7 @@ def rm(args):
 
 
 def rmdir(args):
-    if args==[]:
+    if args == []:
         print("rmdir: specify name(s) of folder(s) to remove")
         return
     for i in args:
@@ -86,7 +88,7 @@ def rmdir(args):
 
 
 def mkdir(args):
-    if args==[]:
+    if args == []:
         print("mkdir: specify name(s) of folder(s) to create")
         return
     for i in args:
