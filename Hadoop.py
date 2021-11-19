@@ -7,6 +7,7 @@ block_size=400
 block_number=math.ceil(file_size/block_size)
 print(file_size)
 
+#breaking down file into blocks
 def Name_Node():
     global block_size,block_number,file_name
     fp_name_node=open("name_node.txt","w")
@@ -30,3 +31,5 @@ def Data_Node(line,block):
     fp_data_node.close()
 
 Name_Node()
+
+#combining the blocks to files
