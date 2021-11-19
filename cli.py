@@ -130,11 +130,11 @@ comm = {
 
 
 def err(fun, args):
-    try:
+    try :
         val = fun(args)
     except Exception as e:
         return e
-    else:
+    else :
         return val
 
 
