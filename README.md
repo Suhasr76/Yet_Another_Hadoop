@@ -6,7 +6,7 @@ In this project we are trying to mimic **Hadoop Distributed File System**(HDFS)
 
 ### Team
 
-1. Jeshwanth
-2. Rohith
-3. Suhas R
-4. Manas V Advaith
+1. [J Jeshwanth Reddy](https://github.com/jeshwanthreddy13)
+2. [Rohith Gangadhara](https://github.com/Rohith-G1024)
+3. [Suhas R](https://github.com/Suhasr76)
+4. [Manas V Advaith](https://github.com/ManasAdvaith)
