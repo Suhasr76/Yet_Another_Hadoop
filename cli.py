@@ -3,10 +3,11 @@ import subprocess
 from prompt_toolkit import output, prompt
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+import shutil
 
 
 def help(args):
-    #print('This is hello command.')
+
     if args == []:
         print("1. ls\t\tList all the file and folders.\n\t-l\tList all the file and folders in a detailed manner.\n\t-al\tList the hidden files along wiht remaining files.")
         print("2. cat [filename]\tDisplay the contents of the file.")
@@ -24,26 +25,41 @@ def cat(args):
     if args == []:
         print("cat: no arguments specified")
         return
-    temp = subprocess.Popen(['cat', args[0]], stdout=subprocess.PIPE)
-    try:
-        output = str(temp.communicate())
-    except Exception as e:
-        print(e)
-
-    output = output.split('\'')
-    output = output[1].split('\\n')
-    # print(temp.stdout)
-    # print(output,type(output))
-    for i in output:
-        print(i)
+    for arg in args:
+        temp = subprocess.Popen(['cat', arg], stdout=subprocess.PIPE)
+        try:
+            output = str(temp.communicate())
+            output = output.split('\'')
+            output = output[1].split('\\n')
+            for i in output:
+                print(i)
+        except Exception as e:
+            print(e)
 
 
-def put():
 
-    print('This is put command.')
+def put(args):
+
+    if len(args)==0:
+        print("put: no arguments specified")
+        return
+    elif len(args)==1:
+        print("put: no target dir mentioned")
+        return
+        
+    locs,loc2 = args[:-1],args[-1]
+    locs = [i.replace('\\','/') for i in locs]
+    loc2 = loc2.replace('\\','/')
+
+    for loc in locs:
+        try:
+            shutil.copy(loc,loc2)
+        except Exception as e: print(e)
+
 
 
 def ls(args):
+
     temp = 0
     if args != []:
         temp = subprocess.Popen(['ls', args[0]], stdout=subprocess.PIPE)
@@ -52,13 +68,10 @@ def ls(args):
     output = str(temp.communicate())
     output = output.split('\'')
     output = output[1].split('\\n')
-    res = []
     for line in output:
-        res.append(line)
-
-    for i in res:
-        print(i)
-    return 0
+        if os.path.isdir(line):
+            line = "./"+line
+        print(line)
 
 
 def rm(args):
@@ -139,7 +152,7 @@ def err(fun, args):
 
 
 while 1:
-    user_input = prompt('>')
+    user_input = prompt('>',auto_suggest=AutoSuggestFromHistory(),history=FileHistory('./logs/history.txt'))
 
     try:
         userInputList = user_input.split(' ')
