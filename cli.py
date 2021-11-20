@@ -8,12 +8,16 @@ from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 def help(args):
     #print('This is hello command.')
     if args == []:
-        print("1. ls\t\tList all the file and folders.\n\t-l\tList all the file and folders in a detailed manner.\n\t-al\tList the hidden files along wiht remaining files.")
-        print("2. cat [filename]\tDisplay the contents of the file.")
-        print("2. rm [filename]\tRemove the files in the given path.")
-        print("3. rmdir [filename]\tRemove the specified directory.")
-        print("4. mkdir [filename]\tCreate directory in the specified path.")
-        print("7. quit/exit\tTo stop the execution of the filesystem.")
+        print("1. ls\t\t\t\t\t\t-List all the file and folders.\n\t-l\t\t\t\t\t-List all the file and folders in a detailed manner.\n\t-al\t\t\t\t\t-List the hidden files along wiht remaining files.")
+        print(
+            "2. cd [folder path]\t\t\t\t-To go the specified directory.\n   cd..\t\t\t\t\t\t-To go back to root directory.")
+        print("3. cat [filename]\t\t\t\t-Display the contents of the file.")
+        print("4. cat [options] [source] [destination]\t\t-options(-r) - to move folder into another folder.\n\t\t\t\t\t\t-source - one or many files to be put.\n\t\t\t\t\t\t-destination - location of the file or folder.")
+        print("5. rm [filename]\t\t\t\t-Remove the files in the given path.")
+        print("6. rmdir [filename]\t\t\t\t-Remove the specified directory.")
+        print(
+            "7. mkdir [filename]\t\t\t\t-Create directory in the specified path.")
+        print("8. quit/exit\t\t\t\t\t-To stop the execution of the filesystem.\n")
     else:
         print(
             f"'help {' '.join(args)}' command not found\nEnter 'help' to know more..")
@@ -38,9 +42,21 @@ def cat(args):
         print(i)
 
 
-def put():
-
-    print('This is put command.')
+def put(args):
+    #print('This is put command.')
+    cp = 'cp '
+    if str(args[0])[0] == '-':
+        cp = cp+args[0]+' '
+    for i in args[:-1]:
+        if i != '-r':
+            command = cp+str(i) + ' ' + str(args[-1])
+            try:
+                os.system(command)
+                #print(f"{i} put into {args[-1]}")
+            except Exception as e:
+                l = e.split('\n')
+                print(l[0])
+    print('\n')
 
 
 def ls(args):
@@ -116,8 +132,17 @@ def exit(args):
             f"'exit {' '.join(args)}' not found!!\n Try 'exit' to quit the fs")
 
 
+def cd(args):
+    if len(args) == 1:
+        try:
+            os.chdir(args[0])
+        except Exception as e:
+            print(e)
+
+
 comm = {
     'help': help,
+    'cd': cd,
     'cat': cat,
     'put': put,
     'ls': ls,
@@ -130,22 +155,26 @@ comm = {
 
 
 def err(fun, args):
-    try :
+    try:
         val = fun(args)
     except Exception as e:
         return e
-    else :
+    else:
         return val
 
 
 while 1:
-    user_input = prompt('>')
-
+    dir = os.getcwd()
+    dir = dir.split('\\')[-1]
+    user_input = prompt(dir+'>')
     try:
-        userInputList = user_input.split(' ')
-        command = comm[userInputList[0]]
-        val = err(command, userInputList[1:])
-        if val == -1:
-            break
+        if user_input == 'cd..':
+            os.chdir('..')
+        else:
+            userInputList = user_input.split(' ')
+            command = comm[userInputList[0]]
+            val = err(command, userInputList[1:])
+            if val == -1:
+                break
     except Exception as e:
         print(f"{e} is not a proper command\nEnter proper command!!")
