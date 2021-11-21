@@ -1,7 +1,7 @@
 import os
 import subprocess
 from prompt_toolkit import output, prompt
-from prompt_toolkit.history import FileHistory
+from prompt_toolkit.history import FileHistory, History
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 import shutil
 
@@ -43,7 +43,7 @@ def cat(args):
 
 
 def put(args):
-    #print('This is put command.')
+
     cp = 'cp '
     if str(args[0])[0] == '-':
         cp = cp+args[0]+' '
@@ -52,7 +52,7 @@ def put(args):
             command = cp+str(i) + ' ' + str(args[-1])
             try:
                 os.system(command)
-                #print(f"{i} put into {args[-1]}")
+
             except Exception as e:
                 l = e.split('\n')
                 print(l[0])
@@ -164,7 +164,7 @@ def err(fun, args):
 while 1:
     dir = os.getcwd()
     dir = dir.split('\\')[-1]
-    user_input = prompt(dir+'>')
+    user_input = prompt(dir+'>',auto_suggest=AutoSuggestFromHistory(),history=History('./logs/history.txt'))
     try:
         if user_input == 'cd..':
             os.chdir('..')
