@@ -1,6 +1,6 @@
 import os
-import subprocess
 from prompt_toolkit import output, prompt
+import subprocess
 from prompt_toolkit.history import FileHistory, History
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 import shutil
