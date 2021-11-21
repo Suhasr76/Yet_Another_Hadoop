@@ -41,7 +41,6 @@ def cat(args):
             print(e)
 
 
-
 def put(args):
 
     cp = 'cp '
@@ -161,13 +160,27 @@ def err(fun, args):
         return val
 
 
+root = os.getcwd()
+if str('\\') in root:
+    root = root.split('\\')[-1]
+elif '/' in root:
+    root = root.split('/')[-1]
+
 while 1:
     dir = os.getcwd()
-    dir = dir.split('\\')[-1]
-    user_input = prompt(dir+'>',auto_suggest=AutoSuggestFromHistory(),history=FileHistory('./logs/history.txt'))
+    if '\\' in dir:
+        dir = dir.split('\\')[-1]
+    elif '/' in dir:
+        dir = dir.split('/')[-1]
+    user_input = prompt(dir+'>', auto_suggest=AutoSuggestFromHistory(),
+                        history=FileHistory('./logs/history.txt'))
     try:
         if user_input == 'cd..':
-            os.chdir('..')
+            if root == dir:
+                print(f'Error : Can\'t go beyond the root directory({root})')
+            else:
+                os.chdir('..')
+
         else:
             userInputList = user_input.split(' ')
             command = comm[userInputList[0]]
