@@ -175,7 +175,7 @@ while 1:
     user_input = prompt(dir+'>', auto_suggest=AutoSuggestFromHistory(),
                         history=FileHistory('./logs/history.txt'))
     try:
-        if user_input == 'cd..':
+        if user_input == 'cd..' or user_input=='cd ..':
             if root == dir:
                 print(f'Error : Can\'t go beyond the root directory({root})')
             else:
