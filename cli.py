@@ -164,7 +164,7 @@ def err(fun, args):
 while 1:
     dir = os.getcwd()
     dir = dir.split('\\')[-1]
-    user_input = prompt(dir+'>',auto_suggest=AutoSuggestFromHistory(),history=History('./logs/history.txt'))
+    user_input = prompt(dir+'>',auto_suggest=AutoSuggestFromHistory(),history=FileHistory('./logs/history.txt'))
     try:
         if user_input == 'cd..':
             os.chdir('..')
