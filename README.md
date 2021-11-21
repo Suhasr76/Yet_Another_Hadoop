@@ -1,7 +1,7 @@
 # Yet Another Hadoop (YAH)
 
 ## Big Data Project of **Team BD2_154_335_413_908**
-In this project we are trying to mimic **Hadoop Distributed File System** (HDFS)
+In this project, we create a File-System that mimics **Hadoop Distributed File System** (HDFS) using Python Programming Language.
 
 
 ### Team
