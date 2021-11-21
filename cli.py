@@ -159,6 +159,9 @@ def err(fun, args):
     else:
         return val
 
+absroot = os.getcwd()
+if os.path.isdir(f'{absroot}/logs')==False:
+    os.mkdir(f'{absroot}/logs')
 
 root = os.getcwd()
 if str('\\') in root:
@@ -173,11 +176,11 @@ while 1:
     elif '/' in dir:
         dir = dir.split('/')[-1]
     user_input = prompt(dir+'>', auto_suggest=AutoSuggestFromHistory(),
-                        history=FileHistory('./logs/history.txt'))
+                        history=FileHistory(f'{absroot}/logs/history.txt'))
     try:
         if user_input == 'cd..' or user_input=='cd ..':
             if root == dir:
-                print(f'Error : Can\'t go beyond the root directory({root})')
+                print(f'cd: Can\'t go backwards beyond the root')
             else:
                 os.chdir('..')
 
@@ -188,4 +191,4 @@ while 1:
             if val == -1:
                 break
     except Exception as e:
-        print(f"{e} is not a proper command\nEnter proper command!!")
+        print(f"{e} : Unknown Command")
