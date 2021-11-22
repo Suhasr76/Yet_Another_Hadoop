@@ -1,4 +1,5 @@
 import os
+from sys import platform
 from prompt_toolkit import output, prompt
 import subprocess
 from prompt_toolkit.history import FileHistory, History
@@ -137,6 +138,30 @@ def cd(args):
             print(e)
 
 
+def python(args):
+    if len(args) != 0:
+        temp = 0
+        try:
+            if platform == "linux" or platform == "linux2":
+                temp = subprocess.Popen(
+                    ['python3', args[0]], stdout=subprocess.PIPE)
+            elif platform == 'win32':
+                temp = subprocess.Popen(
+                    ['python', args[0]], stdout=subprocess.PIPE)
+        except Exception as e:
+            print(e)
+        output = temp.communicate()[0]
+        output = str(output).split('\\n')
+        count = 0
+        for i in output[:-1]:
+            if count == 0:
+                i = i[2:].replace('\\r', '')
+            else:
+                i = i.replace('\\r', '')
+            count += 1
+            print(i)
+
+
 comm = {
     'help': help,
     'cd': cd,
@@ -147,7 +172,9 @@ comm = {
     'rmdir': rmdir,
     'mkdir': mkdir,
     'quit': quit,
-    'exit': exit
+    'exit': exit,
+    'python': python,
+    'python3': python
 }
 
 
@@ -159,8 +186,9 @@ def err(fun, args):
     else:
         return val
 
+
 absroot = os.getcwd()
-if os.path.isdir(f'{absroot}/logs')==False:
+if os.path.isdir(f'{absroot}/logs') == False:
     os.mkdir(f'{absroot}/logs')
 
 root = os.getcwd()
@@ -178,7 +206,7 @@ while 1:
     user_input = prompt(dir+'>', auto_suggest=AutoSuggestFromHistory(),
                         history=FileHistory(f'{absroot}/logs/history.txt'))
     try:
-        if user_input == 'cd..' or user_input=='cd ..':
+        if user_input == 'cd..' or user_input == 'cd ..':
             if root == dir:
                 print(f'cd: Can\'t go backwards beyond the root')
             else:
