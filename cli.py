@@ -42,7 +42,7 @@ def cat(args):
             print(e)
 
 
-def put(args):
+""" def put(args):
 
     cp = 'cp '
     if str(args[0])[0] == '-':
@@ -56,7 +56,25 @@ def put(args):
             except Exception as e:
                 l = e.split('\n')
                 print(l[0])
-    print('\n')
+    print('\n') """
+
+def put(args):
+
+    if len(args)==0:
+        print("put: no arguments specified")
+        return
+    elif len(args)==1:
+        print("put: no target dir mentioned")
+        return
+        
+    locs,loc2 = args[:-1],args[-1]
+    locs = [i.replace('\\','/') for i in locs]
+    loc2 = loc2.replace('\\','/')
+
+    for loc in locs:
+        try:
+            shutil.copy(loc,loc2)
+        except Exception as e: print(e)
 
 
 def ls(args):
