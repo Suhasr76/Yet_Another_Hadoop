@@ -14,7 +14,7 @@ def help(args):
         print(
             "2. cd [folder path]\t\t\t\t-To go the specified directory.\n   cd..\t\t\t\t\t\t-To go back to root directory.")
         print("3. cat [filename]\t\t\t\t-Display the contents of the file.")
-        print("4. cat [options] [source] [destination]\t\t-options(-r) - to move folder into another folder.\n\t\t\t\t\t\t-source - one or many files to be put.\n\t\t\t\t\t\t-destination - location of the file or folder.")
+        print("4. put [options] [source] [destination]\t\t-options(-r) - to move folder into another folder.\n\t\t\t\t\t\t-source - one or many files to be put.\n\t\t\t\t\t\t-destination - location of the file or folder.")
         print("5. rm [filename]\t\t\t\t-Remove the files in the given path.")
         print("6. rmdir [filename]\t\t\t\t-Remove the specified directory.")
         print(
