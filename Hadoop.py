@@ -39,14 +39,14 @@ fp.close()
 def NAMENODE():
 
 
-    global namenode_path,datanodes_path_list,file_name,number_of_blocks,block_size,replication_factor
+
     fp_namenode=open(namenode_path,"w")
     fp_user_file=open(file_name,"r")
     fp_namenode.write(file_name+"###"+str(number_of_blocks)+"\n")
     for i in range(1,number_of_blocks+1):
-        path_offset=random.choice(datanodes_path_list)
+        path_offset=random.choice(datanodes_path_list)#optimize
         path=path_offset[0]
-        offset=path_offset[1]
+        offset=path_offset[1]#check if data node is full, put of 1f(offset<=block_size*10)
         fp_namenode.write(str(path)+" "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n")
         line=""
         for x in range(block_size-1):
@@ -68,4 +68,3 @@ def BLOCK(path,line):
     fp_datanode_x.write(line+"\n")
     fp_datanode_x.close()
 NAMENODE()
-
