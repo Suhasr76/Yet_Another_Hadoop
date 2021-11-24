@@ -37,7 +37,7 @@ def cat(args):
         try:
             output = str(temp.communicate())
             output = output.split('\'')
-            output = output[1].split('\\n')
+            output = output[1].replace('\\r', '').split('\\n')
             for i in output:
                 print(i)
         except Exception as e:
