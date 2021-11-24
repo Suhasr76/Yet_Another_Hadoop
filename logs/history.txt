@@ -349,3 +349,276 @@
 
 # 2021-11-22 17:27:14.100612
 +cat test.py
+
+# 2021-11-23 18:07:30.488298
++help
+
+# 2021-11-23 18:07:35.062636
++ls
+
+# 2021-11-23 18:07:41.122266
++python Hadoop.py
+
+# 2021-11-24 11:34:45.209535
++ls
+
+# 2021-11-24 11:36:18.633593
++python Hadoop.py
+
+# 2021-11-24 11:37:55.811752
++help
+
+# 2021-11-24 12:02:17.436712
++quit
+
+# 2021-11-24 12:02:28.582940
++help
+
+# 2021-11-24 12:02:39.861379
++ls
+
+# 2021-11-24 12:03:00.488361
++mkdir sam
+
+# 2021-11-24 12:03:01.603228
++ls
+
+# 2021-11-24 12:03:12.621548
++put crypto.txt sam
+
+# 2021-11-24 12:03:15.240250
++ls sam
+
+# 2021-11-24 12:03:24.622601
++put logs sam
+
+# 2021-11-24 12:03:31.658668
++put -r logs sam
+
+# 2021-11-24 12:03:39.632699
++put cli.py sam
+
+# 2021-11-24 12:03:42.408086
++ls sam
+
+# 2021-11-24 12:03:46.694464
++rmdir sam
+
+# 2021-11-24 12:03:48.225918
++ls
+
+# 2021-11-24 12:03:51.393804
++ls sam
+
+# 2021-11-24 12:53:35.394629
++ls
+
+# 2021-11-24 12:53:41.810725
++python arg.py -h
+
+# 2021-11-24 12:53:59.752935
++python arg.py 1 2 3
+
+# 2021-11-24 12:54:06.982358
++python arg.py 1 2 3 4 --sum
+
+# 2021-11-24 12:54:47.474528
++python arg.py
+
+# 2021-11-24 12:54:56.301307
++python arg.py --sum 1 2
+
+# 2021-11-24 12:55:04.160646
++python arg.py --sum 2 1 3
+
+# 2021-11-24 12:58:58.738212
++ls
+
+# 2021-11-24 12:59:05.856260
++python arg.py --input hi
+
+# 2021-11-24 13:00:00.395165
++cat arg.py
+
+# 2021-11-24 13:00:12.610710
++arg.py
+
+# 2021-11-24 13:00:17.274022
++python arg.py
+
+# 2021-11-24 13:00:22.370576
++python arg.py -h
+
+# 2021-11-24 13:00:31.211849
++python arg.py --input 
+
+# 2021-11-24 13:00:43.501210
++python arg.py --input CRPYTO
+
+# 2021-11-24 13:00:49.014591
++python arg.py --input crypto
+
+# 2021-11-24 13:02:07.675406
++python arg.py 
+
+# 2021-11-24 13:02:18.018435
++python arg.py hi --input
+
+# 2021-11-24 13:04:14.677919
++quit
+
+# 2021-11-24 13:05:10.193445
++python arg.py --input crypto
+
+# 2021-11-24 13:05:46.817077
++quit
+
+# 2021-11-24 13:05:48.830979
++python arg.py --input crypto
+
+# 2021-11-24 14:08:21.428444
++yah --input hi --output hello
+
+# 2021-11-24 14:08:26.070626
++quit
+
+# 2021-11-24 14:10:03.709900
++yah --input hi --output hello
+
+# 2021-11-24 14:10:23.724182
++quit
+
+# 2021-11-24 14:10:39.858020
++yah --input hi --output hello
+
+# 2021-11-24 14:11:23.309003
++quit
+
+# 2021-11-24 14:11:26.168283
++yah --input hi --output hello
+
+# 2021-11-24 14:11:49.969272
++quit
+
+# 2021-11-24 14:11:53.818479
++yah --input hi --output hello
+
+# 2021-11-24 14:12:10.940443
++quit
+
+# 2021-11-24 14:12:12.914305
++yah --input hi --output hello
+
+# 2021-11-24 14:13:34.236230
++yah --input crypto.txt --output Output --config confif_sample.json --mapper Mapper.py --reducer Reducer.py
+
+# 2021-11-24 14:13:42.139030
++yah --input crypto.txt --output Output --config config_sample.json --mapper Mapper.py --reducer Reducer.py
+
+# 2021-11-24 14:13:56.291202
++yah --input crypto.txt arg.py --output Output --config config_sample.json --mapper Mapper.py --reducer Reducer.py
+
+# 2021-11-24 14:16:57.758474
++quit
+
+# 2021-11-24 14:17:00.402796
++help
+
+# 2021-11-24 14:17:17.180493
++quit
+
+# 2021-11-24 14:17:20.416516
++help
+
+# 2021-11-24 14:17:23.880877
++quit
+
+# 2021-11-24 14:17:41.608849
++yah --input crypto.txt arg.py --output Output --config config_sample.json --mapper Mapper.py --reducer Reducer.py
+
+# 2021-11-24 14:23:48.399067
++quit
+
+# 2021-11-24 14:23:51.665645
++help
+
+# 2021-11-24 14:24:19.222646
++quit
+
+# 2021-11-24 14:24:21.092492
++help
+
+# 2021-11-24 14:24:38.970181
++quit
+
+# 2021-11-24 14:24:40.487533
++help
+
+# 2021-11-24 14:26:03.370296
++quit
+
+# 2021-11-24 14:26:05.121178
++help
+
+# 2021-11-24 14:26:52.636905
++quit
+
+# 2021-11-24 14:26:58.630740
++help
+
+# 2021-11-24 14:27:27.264252
++quit
+
+# 2021-11-24 14:27:31.105380
++help
+
+# 2021-11-24 14:27:51.258926
++quit
+
+# 2021-11-24 14:27:52.585287
++help
+
+# 2021-11-24 14:29:22.301776
++quit
+
+# 2021-11-24 14:29:24.190569
++help
+
+# 2021-11-24 14:29:42.419875
++quit
+
+# 2021-11-24 14:29:44.997344
++help
+
+# 2021-11-24 14:30:02.725848
++help me
+
+# 2021-11-24 14:30:20.573004
++help
+
+# 2021-11-24 14:30:22.316615
++quit
+
+# 2021-11-24 14:30:24.311818
++help me
+
+# 2021-11-24 14:31:08.019384
++yah --input crypto.txt arg.py --output Output --config config_sample.json --mapper Mapper.py --reducer Reducer.py
+
+# 2021-11-24 14:31:12.047099
++quit
+
+# 2021-11-24 14:31:19.199405
++yah --input crypto.txt arg.py --output Output --config config_sample.json --mapper Mapper.py --reducer Reducer.py
+
+# 2021-11-24 14:33:24.323015
++quit
+
+# 2021-11-24 14:34:24.479200
++ls
+
+# 2021-11-24 14:34:31.048043
++yah --input crypto.txt arg.py --output Output --config config_sample.json --mapper Mapper.py --reducer Reducer.py
+
+# 2021-11-24 14:35:08.057023
++quit

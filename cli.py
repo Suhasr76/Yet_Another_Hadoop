@@ -19,10 +19,12 @@ def help(args):
         print("6. rmdir [filename]\t\t\t\t-Remove the specified directory.")
         print(
             "7. mkdir [filename]\t\t\t\t-Create directory in the specified path.")
-        print("8. quit/exit\t\t\t\t\t-To stop the execution of the filesystem.\n")
+        print("8 . quit/exit\t\t\t\t\t-To stop the execution of the filesystem.\n")
+        print(
+            f"To run a Hadoop Job-\nyah{' '*1}--input [str, absolute path to input file inside fs_path]\n{' '*4}--output [str, absolute path to directory to store output and job status]\n{' '*4}--config [str, absolute path to dfs_setup_config to load DFS configuration]\n{' '*4}--mapper [str, absolute path to mapper.py]\n{' '*4}--reducer [str, absolute path to reducer.py]\n")
     else:
         print(
-            f"'help {' '.join(args)}' command not found\nEnter 'help' to know more..")
+            f"help {' '.join(args)}: command not found\nEnter 'help' to know more..")
 
 
 def cat(args):
@@ -58,23 +60,25 @@ def cat(args):
                 print(l[0])
     print('\n') """
 
+
 def put(args):
 
-    if len(args)==0:
+    if len(args) == 0:
         print("put: no arguments specified")
         return
-    elif len(args)==1:
+    elif len(args) == 1:
         print("put: no target dir mentioned")
         return
-        
-    locs,loc2 = args[:-1],args[-1]
-    locs = [i.replace('\\','/') for i in locs]
-    loc2 = loc2.replace('\\','/')
+
+    locs, loc2 = args[:-1], args[-1]
+    locs = [i.replace('\\', '/') for i in locs]
+    loc2 = loc2.replace('\\', '/')
 
     for loc in locs:
         try:
-            shutil.copy(loc,loc2)
-        except Exception as e: print(e)
+            shutil.copy(loc, loc2)
+        except Exception as e:
+            print(e)
 
 
 def ls(args):
@@ -180,6 +184,23 @@ def python(args):
             print(i)
 
 
+def yah(args):
+    arguments = ' '.join(args)
+    # print(arguments)
+    l = arguments.split('--')
+    d = {}
+    for i in l[1:]:
+        j = i.split(' ')
+        if '' in j:
+            j.remove('')
+        d[j[0]] = j[1:]
+        # Use j[0] to access --input,--output
+        # Use j[1:] to access the value of input, output etc
+        print(f'{j[0]} - {j[1:]}')
+    # Or here you can just use the dictionary
+    return d
+
+
 comm = {
     'help': help,
     'cd': cd,
@@ -192,7 +213,8 @@ comm = {
     'quit': quit,
     'exit': exit,
     'python': python,
-    'python3': python
+    'python3': python,
+    'yah': yah
 }
 
 
@@ -234,6 +256,9 @@ while 1:
             userInputList = user_input.split(' ')
             command = comm[userInputList[0]]
             val = err(command, userInputList[1:])
+            if val != None and val != -1:
+                print(val)
+
             if val == -1:
                 break
     except Exception as e:
