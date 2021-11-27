@@ -13,8 +13,7 @@ import string
 import sys
 import json
 import importlib
-sys.path.insert(1, '/home/pes2ug19cs413/Desktop/dfs')
-sys.path.insert(1, '/home/pes2ug19cs413/Desktop/dfs')
+#sys.path.insert(1, '/home/pes2ug19cs335/Desktop/dfs')
 path = os.getcwd()
 mymap=None
 myred=None
@@ -137,7 +136,7 @@ def create_namenode():
 def NAMENODE():
 
     fp_namenode = open(namenode_path, "w")
-    fp_user_file = open(file_name, "r")
+    fp_user_file = open("file_name", "r")
     # fp_namenode.write(file_name+"###"+str(number_of_blocks)+"\n") #Can't Use this and parse the string from the text file so i am commenting it out
     for i in range(1, number_of_blocks+1):
         flag = True
@@ -388,4 +387,4 @@ def yah(file_name,output,config,mapper,reducer):
     # inp_mapper=input('Mapper - ')
     # inp_reducer=input('Reducer - ')
     # yah(inp_filename,inp_output,inp_config,inp_mapper,inp_reducer)
-yah('crypto.txt','output1.txt','test_config.json','mapper','reducer')
+#yah('crypto.txt','output1.txt','test_config.json','mapper','reducer')

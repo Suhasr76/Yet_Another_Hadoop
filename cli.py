@@ -196,7 +196,7 @@ def yah(args):
         d[j[0]] = j[1]
         # Use j[0] to access --input,--output
         # Use j[1:] to access the value of input, output etc
-        print(f'{j[0]} - {j[1:]}')
+        #print(f'{j[0]} - {j[1:]}')
     # Or here you can just use the dictionary
     #return d
     Hadoop.yah(d['input'],d['output'],d['config'],d['mapper'],d['reducer'])

@@ -9,7 +9,7 @@ import sys
 import re
 def doo(line):
  
- print(multiprocessing.current_process().name, 'reading');
+ #print(multiprocessing.current_process().name, 'reading');
  #TR = string.maketrans(string.punctuation, ' ' * len(string.punctuation))
 
  #print(multiprocessing.current_process().name, 'reading', line)
