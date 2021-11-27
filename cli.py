@@ -1,8 +1,8 @@
 import os
 from sys import platform
-from prompt_toolkit import output, prompt
+from prompt_toolkit import prompt
 import subprocess
-from prompt_toolkit.history import FileHistory, History
+from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 import shutil
 import Hadoop
@@ -253,7 +253,7 @@ while 1:
                 print(f'cd: Can\'t go backwards beyond the root')
             else:
                 os.chdir('..')
-
+        elif user_input == '': pass
         else:
             userInputList = user_input.split(' ')
             command = comm[userInputList[0]]

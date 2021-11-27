@@ -1,19 +1,14 @@
-import reducer
-import mapper
 import os
 import math
 import random
 import collections
 import itertools
 import multiprocessing
-import operator
-import glob
-import multiprocessing
-import string
 import sys
 import json
 import importlib
-#sys.path.insert(1, '/home/pes2ug19cs335/Desktop/dfs')
+from getpass import getuser
+
 path = os.getcwd()
 mymap=None
 myred=None
@@ -234,15 +229,16 @@ def yah(file_name,output,config,mapper,reducer):
     f = open(config)
     data = json.load(f)
     block_size = data['block_size']  # in bytes for now
-    path_to_datanodes = data['path_to_datanodes']
+    path_to_datanodes = data['path_to_datanodes'].replace('$USER',getuser())
+    
     #  print("1",path_to_datanodes)#"/home/pes2ug19cs413/Desktop/DATANODES"
     # "/home/pes2ug19cs413/Desktop/NAMENODES"
-    path_to_namenodes = data['path_to_namenodes']
+    path_to_namenodes = data['path_to_namenodes'].replace('$USER',getuser())
     replication_factor = data['replication_factor']  # 3
     num_datanodes = data['num_datanodes']  # 5
     datanode_size = data['datanode_size']  # 10 #10 blocks in 1 datanode
     sync_period = data['sync_period']  # 180 #in miliseconds
-    namenode_checkpoints = data['namenode_checkpoints']
+    namenode_checkpoints = data['namenode_checkpoints'].replace('$USER',getuser())
     global file_size, number_of_blocks  
     #compute_file_size(file_name)
     file_size = os.path.getsize(file_name)
