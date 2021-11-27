@@ -1,5 +1,5 @@
-import reducer
-import mapper
+#import reducer
+#import mapper
 import os
 import math
 import random
@@ -12,10 +12,12 @@ import multiprocessing
 import string
 import sys
 import json
+import importlib
 sys.path.insert(1, '/home/pes2ug19cs413/Desktop/dfs')
 sys.path.insert(1, '/home/pes2ug19cs413/Desktop/dfs')
 path = os.getcwd()
-
+mymap=None
+myred=None
 
 class MapReduce(object):
 
@@ -91,9 +93,9 @@ namenode_checkpoints = data['namenode_checkpoints']
 # get input file, calculate size of file, calculate no. of blocks required
 
 
-def compute_file_size():
-    global file_size, file_name, number_of_blocks
-    file_name = input("enter the file name along with extension - ")
+def compute_file_size(file_name):
+    
+    #file_name = input("enter the file name along with extension - ")
     file_size = os.path.getsize(file_name)
     # print(file_size)
     number_of_blocks = math.ceil(file_size/(block_size-1))
@@ -189,13 +191,13 @@ def BLOCK(path, line):
 
 
 def Mapper(line):  # Mapper
-
-    return mapper.doo(line)
+    global mymap
+    return mymap.doo(line)
 
 
 def Reducer(item):  # Reducer
-
-    return(reducer.doo(item))
+    global myred
+    return(myred.doo(item))
 
 
 def Pass_To_Mapper(path, offset):
@@ -218,7 +220,7 @@ def Pass_To_Mapper(path, offset):
     return line
 
 
-if __name__ == '__main__':  # Using This for better code understanding :-)
+#if __name__ == '__main__':  # Using This for better code understanding :-)
     # call only if HDFS space is bigger than the file to be stored
     #  block_size=300 #in bytes for now
     #  path_to_datanodes="/home/pes2ug19cs413/Desktop/DATANODES"
@@ -228,6 +230,10 @@ if __name__ == '__main__':  # Using This for better code understanding :-)
     #  datanode_size=20 #10 blocks in 1 datanode
     #  sync_period=180 #in miliseconds
     #  namenode_checkpoints="/home/pes2ug19cs413/Desktop/NAMENODES/CHECKPOINTS"
+def yah(file_name,output,config,mapper,reducer):
+      
+    f = open(config)
+    data = json.load(f)
     block_size = data['block_size']  # in bytes for now
     path_to_datanodes = data['path_to_datanodes']
     #  print("1",path_to_datanodes)#"/home/pes2ug19cs413/Desktop/DATANODES"
@@ -238,19 +244,96 @@ if __name__ == '__main__':  # Using This for better code understanding :-)
     datanode_size = data['datanode_size']  # 10 #10 blocks in 1 datanode
     sync_period = data['sync_period']  # 180 #in miliseconds
     namenode_checkpoints = data['namenode_checkpoints']
-    compute_file_size()
+    global file_size, number_of_blocks  
+    #compute_file_size(file_name)
+    file_size = os.path.getsize(file_name)
+    # print(file_size)
+    number_of_blocks = math.ceil(file_size/(block_size-1))
+
     if(math.floor(num_datanodes*block_size*datanode_size/replication_factor) >= file_size):
-        create_datanodes()
-        create_namenode()
-        NAMENODE()
+        #create_datanodes()
+        if not os.path.isdir(path_to_datanodes):
+            os.mkdir(path_to_datanodes)
+        global datanodes_path_list
+        datanodes_path_list = []
+        for i in range(1, num_datanodes+1):
+            datanode_name = "datanode"+str(i)+".txt"
+            datanode_X = path_to_datanodes+str("/")+datanode_name
+            fp = open(datanode_X, "w")
+            datanodes_path_list.append([datanode_X, int(0)])
+            fp.close()
+
+
+        #create_namenode()
+        if not os.path.isdir(path_to_namenodes):
+            os.mkdir(path_to_namenodes)
+        global namenode_path
+        namenode_path = str(path_to_namenodes+"/namenode.txt")
+        fp = open(namenode_path, "w")
+        fp.close()
+
+
+        #NAMENODE()
+        fp_namenode = open(namenode_path, "w")
+        fp_user_file = open(file_name, "r")
+        # fp_namenode.write(file_name+"###"+str(number_of_blocks)+"\n") #Can't Use this and parse the string from the text file so i am commenting it out
+        for i in range(1, number_of_blocks+1):
+            flag = True
+            while(flag):
+                path_offset = random.choice(datanodes_path_list)  # optimize
+                path = path_offset[0]
+                # check if data node is full, put of 1f(offset<=block_size*10)
+                offset = path_offset[1]
+                if(offset <= (block_size*datanode_size)-block_size):
+                    flag = False
+            fp_namenode.write("Block: "+str(i)+" "+str(path) +
+                            " "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n")
+            line = ""
+            for x in range(block_size-1):
+                try:
+                    line = line+fp_user_file.read(1)
+                except:
+                    break
+            offset_new = int(offset)+len(line)+1
+            datanodes_path_list[datanodes_path_list.index(path_offset)] = [
+                path, offset_new]
+            BLOCK(path, line)
+
+    # replication
+            lingo_list = []
+            lingo_list.append(path_offset[0])
+            rep = 1
+            while(rep < replication_factor):
+                path_offset_new = random.choice(datanodes_path_list)
+                if(path_offset_new[0] not in lingo_list):
+                    lingo_list.append(path_offset_new[0])
+                    path_new = path_offset_new[0]
+                    offset_new_x = path_offset_new[1]
+                    if(offset_new_x <= (block_size*datanode_size)-block_size):
+                        BLOCK(path_new, line)
+                        fp_namenode.write("Block: "+str(i)+" "+str(path_new) + " " + "offset: " + str(
+                            offset_new_x) + " " + "rep_factor: "+str(rep) + "\n")
+                        offset_new_x = int(offset_new_x)+len(line)+1
+                        datanodes_path_list[datanodes_path_list.index(path_offset_new)] = [
+                            path_new, offset_new_x]
+                        rep += 1
+
+        fp_namenode.close()
+        fp_user_file.close()
     else:
         print("File size too big for HDFS to compute")
-
-    mappper = MapReduce(Mapper, Reducer)  # returning a class object to mapper
-    # After removing irrelevent Widthords(Characters) the size of the Widthidth required
+    #try:
+    global mymap,myred
+    mymap=importlib.import_module(mapper)
+    myred=importlib.import_module(reducer)
+    mappper = MapReduce(mymap, myred)  # returning a class object to mapper
+        # After removing irrelevent Widthords(Characters) the size of the Widthidth required
     Width = 4
     Matrix = [[0 for x in range(Width)] for y in range(
-        number_of_blocks*replication_factor)]
+    number_of_blocks*replication_factor)]
+    #except:
+    #print('Mapper reducer error')    
+    
 
     try:
         file1 = open(path_to_namenodes+'/namenode.txt', 'r')
@@ -289,10 +372,19 @@ if __name__ == '__main__':  # Using This for better code understanding :-)
 
     # For having symmetrical space all through the output by selecting the longest word
     longest = max(len(word) for word, count in word_counts)
-    out = open('output.txt', 'w')
+    out = open(output, 'w')
     for word, count in word_counts:  # Iterating through each tuple
         # The "%-*s" indicates a left trailing space whose value will be passes by longest+1 in the print statement
         print('%-*s: %5s' % (longest+1, word, count))
         out.write('%-*s: %5s\n' % (longest+1, word, count))
     out.close()
     # mappper = MapReduce(Mapper, Reducer)#returning a class object to mapper
+
+#if __name__ == '__main__':
+    # inp_filename=input('Filename - ')
+    # inp_output=input('Output - ')
+    # inp_config=input('Config - ')
+    # inp_mapper=input('Mapper - ')
+    # inp_reducer=input('Reducer - ')
+    # yah(inp_filename,inp_output,inp_config,inp_mapper,inp_reducer)
+    #yah('crypto.txt','output1.txt','test_config.json','mapper','reducer')

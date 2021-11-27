@@ -5,7 +5,7 @@ import subprocess
 from prompt_toolkit.history import FileHistory, History
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 import shutil
-
+import Hadoop
 
 def help(args):
 
@@ -193,11 +193,13 @@ def yah(args):
         j = i.split(' ')
         if '' in j:
             j.remove('')
-        d[j[0]] = j[1:]
+        d[j[0]] = j[1]
         # Use j[0] to access --input,--output
         # Use j[1:] to access the value of input, output etc
         print(f'{j[0]} - {j[1:]}')
     # Or here you can just use the dictionary
+    #return d
+    Hadoop.yah(d['input'],d['output'],d['config'],d['mapper'],d['reducer'])
     return d
 
 
@@ -256,9 +258,6 @@ while 1:
             userInputList = user_input.split(' ')
             command = comm[userInputList[0]]
             val = err(command, userInputList[1:])
-            if val != None and val != -1:
-                print(val)
-
             if val == -1:
                 break
     except Exception as e:
