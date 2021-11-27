@@ -814,3 +814,12 @@
 
 # 2021-11-27 22:37:22.093305
 +yah --input crypto.txt --output Output --config test_config.json --mapper mapper --reducer reducer
+
+# 2021-11-27 22:42:59.973379
++quit
+
+# 2021-11-27 22:43:04.378467
++yah --input crypto.txt --output Output --config test_config.json --mapper mapper --reducer reducer
+
+# 2021-11-27 22:43:22.230737
++yah --input cli.py --output Output --config test_config.json --mapper mapper --reducer reducer
