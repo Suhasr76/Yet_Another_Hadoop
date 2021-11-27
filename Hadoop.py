@@ -16,9 +16,7 @@ sys.path.insert(1,'/home/pes2ug19cs413/Desktop/dfs')
 import reducer
 path=os.getcwd()
 
-f=open('config_sample.json')
-data = json.load(f)
-#print(data)
+
 
 class MapReduce(object):
     
@@ -69,14 +67,18 @@ class MapReduce(object):
 
 
 #1234
+f=open('config_sample.json')
+data = json.load(f)
+#print(data)
 block_size=data['block_size']#in bytes for now
-path_to_datanodes="/home/pes2ug19cs413/Desktop/DATANODES"
-path_to_namenodes="/home/pes2ug19cs413/Desktop/NAMENODES"
-replication_factor=3
-num_datanodes=5
-datanode_size=10 #10 blocks in 1 datanode
-sync_period=180 #in miliseconds
-namenode_checkpoints="/home/pes2ug19cs413/Desktop/NAMENODES/CHECKPOINTS"
+path_to_datanodes=data['path_to_datanodes']
+#print("1",path_to_datanodes)#"/home/pes2ug19cs413/Desktop/DATANODES"
+path_to_namenodes=data['path_to_namenodes']#"/home/pes2ug19cs413/Desktop/NAMENODES"
+replication_factor=data['replication_factor']#3
+num_datanodes=data['num_datanodes']#5
+datanode_size=data['datanode_size']#10 #10 blocks in 1 datanode
+sync_period=data['sync_period']#180 #in miliseconds
+namenode_checkpoints=data['namenode_checkpoints']#"/home/pes2ug19cs413/Desktop/NAMENODES/CHECKPOINTS"
 #1234
 #step1
 #get input file, calculate size of file, calculate no. of blocks required
@@ -92,6 +94,8 @@ def compute_file_size():
 #create X datanodes inside DATANODE directory
 #X ranges from 1 to num_datanodes(pre defined variable)
 def create_datanodes():
+    #print(path_to_datanodes)
+    #print(data['path_to_datanodes'])
     if not os.path.isdir(path_to_datanodes):
         os.mkdir(path_to_datanodes)
     global datanodes_path_list
@@ -211,15 +215,23 @@ def Pass_To_Mapper(path,offset):
 
 if __name__ == '__main__':#Using This for better code understanding :-)
 #call only if HDFS space is bigger than the file to be stored
- block_size=300 #in bytes for now
- path_to_datanodes="/home/pes2ug19cs413/Desktop/DATANODES"
- path_to_namenodes="/home/pes2ug19cs413/Desktop/NAMENODES"
- replication_factor=3
- num_datanodes=20
- datanode_size=20 #10 blocks in 1 datanode
- sync_period=180 #in miliseconds
- namenode_checkpoints="/home/pes2ug19cs413/Desktop/NAMENODES/CHECKPOINTS"
-
+#  block_size=300 #in bytes for now
+#  path_to_datanodes="/home/pes2ug19cs413/Desktop/DATANODES"
+#  path_to_namenodes="/home/pes2ug19cs413/Desktop/NAMENODES"
+#  replication_factor=3
+#  num_datanodes=20
+#  datanode_size=20 #10 blocks in 1 datanode
+#  sync_period=180 #in miliseconds
+#  namenode_checkpoints="/home/pes2ug19cs413/Desktop/NAMENODES/CHECKPOINTS"
+ block_size=data['block_size']#in bytes for now
+ path_to_datanodes=data['path_to_datanodes']
+ #  print("1",path_to_datanodes)#"/home/pes2ug19cs413/Desktop/DATANODES"
+ path_to_namenodes=data['path_to_namenodes']#"/home/pes2ug19cs413/Desktop/NAMENODES"
+ replication_factor=data['replication_factor']#3
+ num_datanodes=data['num_datanodes']#5
+ datanode_size=data['datanode_size']#10 #10 blocks in 1 datanode
+ sync_period=data['sync_period']#180 #in miliseconds
+ namenode_checkpoints=data['namenode_checkpoints']
  compute_file_size()
  if(math.floor(num_datanodes*block_size*datanode_size/replication_factor)>=file_size):
     create_datanodes()
@@ -235,7 +247,7 @@ if __name__ == '__main__':#Using This for better code understanding :-)
  Matrix = [[0 for x in range(Width)] for y in range(number_of_blocks*replication_factor)]
  
  try:
-      file1 = open('/home/pes2ug19cs413/Desktop/NAMENODES/namenode.txt', 'r')
+      file1 = open(path_to_namenodes+'/namenode.txt', 'r')
  except OSError:
     print("Could not open NameNode ....Terminating");
     sys.exit("File not Open Error");
@@ -271,10 +283,11 @@ if __name__ == '__main__':#Using This for better code understanding :-)
  
     
  longest = max(len(word) for word, count in word_counts)#For having symmetrical space all through the output by selecting the longest word
+ out=open('output.txt','w')
  for word, count in word_counts:#Iterating through each tuple
     print('%-*s: %5s' % (longest+1, word, count));#The "%-*s" indicates a left trailing space whose value will be passes by longest+1 in the print statement
-
-
+    out.write('%-*s: %5s\n' % (longest+1, word, count))
+ out.close()
    #mappper = MapReduce(Mapper, Reducer)#returning a class object to mapper
    
 
