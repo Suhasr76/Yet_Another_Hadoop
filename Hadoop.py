@@ -1,5 +1,5 @@
-#import reducer
-#import mapper
+import reducer
+import mapper
 import os
 import math
 import random
@@ -193,12 +193,12 @@ def BLOCK(path, line):
 def Mapper(line):  # Mapper
     global mymap
     return mymap.doo(line)
-
+    #return mapper.doo(line)
 
 def Reducer(item):  # Reducer
     global myred
     return(myred.doo(item))
-
+    #return reducer.doo(item)
 
 def Pass_To_Mapper(path, offset):
 
@@ -231,7 +231,7 @@ def Pass_To_Mapper(path, offset):
     #  sync_period=180 #in miliseconds
     #  namenode_checkpoints="/home/pes2ug19cs413/Desktop/NAMENODES/CHECKPOINTS"
 def yah(file_name,output,config,mapper,reducer):
-      
+    #print(1)  
     f = open(config)
     data = json.load(f)
     block_size = data['block_size']  # in bytes for now
@@ -326,7 +326,8 @@ def yah(file_name,output,config,mapper,reducer):
     global mymap,myred
     mymap=importlib.import_module(mapper)
     myred=importlib.import_module(reducer)
-    mappper = MapReduce(mymap, myred)  # returning a class object to mapper
+    #mappper = MapReduce(Mapper, Reducer)  # returning a class object to mapper
+    mappper = MapReduce(Mapper,Reducer)
         # After removing irrelevent Widthords(Characters) the size of the Widthidth required
     Width = 4
     Matrix = [[0 for x in range(Width)] for y in range(
@@ -387,4 +388,4 @@ def yah(file_name,output,config,mapper,reducer):
     # inp_mapper=input('Mapper - ')
     # inp_reducer=input('Reducer - ')
     # yah(inp_filename,inp_output,inp_config,inp_mapper,inp_reducer)
-    #yah('crypto.txt','output1.txt','test_config.json','mapper','reducer')
+yah('crypto.txt','output1.txt','test_config.json','mapper','reducer')

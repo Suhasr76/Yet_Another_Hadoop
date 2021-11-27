@@ -718,3 +718,45 @@
 
 # 2021-11-27 11:22:24.561793
 +exit
+
+# 2021-11-27 21:43:29.344678
++yah --input crypto.txt --output Output --config test_config.json --mapper Mapper.py --reducer Reducer.py
+
+# 2021-11-27 21:44:30.140703
++quit
+
+# 2021-11-27 21:46:04.594386
++yah --input crypto.txt --output Output --config test_config.json --mapper Mapper.py --reducer Reducer.py
+
+# 2021-11-27 21:46:46.608833
++quit
+
+# 2021-11-27 21:46:48.948077
++yah --input crypto.txt --output Output --config test_config.json --mapper Mapper.py --reducer Reducer.py
+
+# 2021-11-27 21:47:15.103540
++quit
+
+# 2021-11-27 21:48:41.664884
++yah --input crypto.txt --output Output --config test_config.json --mapper Mapper --reducer Reducer
+
+# 2021-11-27 21:49:30.808162
++yah --input crypto.txt --output Output --config test_config.json --mapper mapper --reducer reducer
+
+# 2021-11-27 21:51:55.597610
++quit
+
+# 2021-11-27 21:52:01.809065
++yah --input crypto.txt --output Output --config test_config.json --mapper mapper --reducer reducer
+
+# 2021-11-27 21:53:53.100220
++quit
+
+# 2021-11-27 21:54:00.154559
++yah --input crypto.txt --output Output --config test_config.json --mapper mapper --reducer reducer
+
+# 2021-11-27 21:55:36.065799
++quit
+
+# 2021-11-27 21:55:39.352655
++yah --input crypto.txt --output Output --config test_config.json --mapper mapper --reducer reducer
