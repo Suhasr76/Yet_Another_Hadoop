@@ -1,5 +1,3 @@
-
-
 Test Scenario #2: Utility Payments App According to the given Test scenario, the mobile
 application service provider company XYZ is looking to
 expand its functionalities to more popular domains of banking and transactions, travel booking, 
