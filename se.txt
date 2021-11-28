@@ -1,0 +1,87 @@
+
+
+Test Scenario #2: Utility Payments App According to the given Test scenario, the mobile
+application service provider company XYZ is looking to
+expand its functionalities to more popular domains of banking and transactions, travel booking, 
+etc. We want to make sure that the mobile app works flawlessly on both Android and iOS platforms 
+before its launched into the market (Regression Testing).
+Since the process of monetary transaction is at the heart of this app, our choices for test cases 
+will also revolve around the same.
+Testing Strategy
+Testing mindset:  Evaluation Model is used since we need to detect faults in the system and resolve 
+them before release.
+Test Types: Functional Testing is chosen since proper execution of transactions is a major 
+functionality  and we are more obsessed with the performance rather than the code-details.
+Test Environment:  Android (API level >= 24) and iOS (>=10.3) operating systems.
+
+
+
+Automation Strategy: To save time on repetitive manual testing and to make sure that the new app 
+doesn't perform worse than is predecessors, we will automate testing some most vital test cases 
+that need to be passed at all costs for the app to create a benchmark in its version history.
+Examples of test cases that will be automated:
+a. Checking for a strong internet connectivity, GPS connectivity, as well as other optional 
+requirements (like Bluetooth connectivity) before initiating a transaction
+b. Quick response time observed in all parts of the application
+c. Ensuring that the app never crashes and shuts down gracefully in case of any unhandled extreme 
+situation (such as an internet outage, force stopping the app, etc.)
+Risk Identification and Contingency planning:
+With advancing technology and newer versions of operating systems developed every day, we cannot 
+overlook the possibility of enforcing stricter  requirements  for online transaction software 
+(mandatory checking for the network sanity, firewall, etc. for
+
+
+
+enhanced transaction security) and hence planning for introducing the apt test cases in the test 
+suit in near future should be done.
+Process Improvement Suggested:
+Since we are looking to introduce new functionalities like banking and travel booking, the 
+transaction time should be looked to be minimized as much as possible while also maintaining its 
+reliability to meet user satisfaction and to provide stiff competition in the growing market.
+Also, the completion of KYC (Know You Customer) procedure could be made mandatory for increased 
+reliability and curbing frauds.
+
+
+Test Cases: 1)Test case 1:
+Test case ID: UT01
+Title: Quick status update in UI post transaction. Description:  After a successful (or a failed) 
+transaction, the status should be reflected within 3 seconds after completing the transaction on 
+the app UI.
+
+
+
+Prerequisites: The transaction has been initiated successfully, the sender and the recipient's 
+details have been verified.
+Assumptions:  The app is already installed on a supported OS (Android or iOS) and the device is 
+connected to a stable network.
+Test Steps:
+a. Fetch information regarding the receiver, the card number and CVV.
+b. Validate the above information.
+c. Ensure the internet connectivity  is present, along
+with location (GPS).
+d. Execute the transaction.
+Expected Results: A page announcing the completion of a successful transaction along with the 
+amount deducted from the sender's account is displayed on the screen within 3 seconds.
+
+
+2)Test case 2:
+Test case ID: NOKYC01
+Title: Reject Transaction  in case of No KYC Description: If the sender has not completed his/her 
+KYC registration and attempts to initiate a
+
+
+
+transaction, it should be rejected with a prompt to complete the KYC registration.
+Prerequisites: The user has already registered on the
+app with basic details like name, address, etc. Assumptions: The app is already installed on a 
+supported OS (Android or iOS) and the device is connected to a stable network.
+Test Steps:
+a. Login/Register as a user and ignore the KYC procedure.
+b. Click on the “New Payment” option.
+Expected Results: A page displaying an error message saying that the user hasn't completed the KYC 
+procedure must appear immediately.
+
+
+Test Measures and Metrics:
+1. Touch-response time (in milliseconds).
+2.  User ratings (out of 5).
