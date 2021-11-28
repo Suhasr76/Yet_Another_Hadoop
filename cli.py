@@ -199,7 +199,7 @@ def yah(args):
         #print(f'{j[0]} - {j[1:]}')
     # Or here you can just use the dictionary
     #return d
-    Hadoop.yah(d['input'],d['output'],d['config'],d['mapper'],d['reducer'])
+    Hadoop.yah(d['input'],d['output'],d['config'],d['mapper'].replace('.py',''),d['reducer'].replace('.py',''))
     return d
 
 

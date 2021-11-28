@@ -823,3 +823,81 @@
 
 # 2021-11-27 22:43:22.230737
 +yah --input cli.py --output Output --config test_config.json --mapper mapper --reducer reducer
+
+# 2021-11-28 11:38:59.923924
++yah --input se.txt --output se-output.txt --config test_config.json --mapper mapper --reducer reducer
+
+# 2021-11-28 11:39:59.845863
++quit
+
+# 2021-11-28 11:40:55.248073
++yah --input se.txt --output se-output.txt --config test_config.json --mapper mapper --reducer reducer
+
+# 2021-11-28 16:15:59.103389
++ls
+
+# 2021-11-28 16:16:07.089840
++mkdir output
+
+# 2021-11-28 16:16:21.896188
++put output.txt output
+
+# 2021-11-28 16:16:34.813638
++put output1.txt output
+
+# 2021-11-28 16:16:38.534136
++ls output
+
+# 2021-11-28 16:16:45.739354
++put Output output
+
+# 2021-11-28 16:16:55.636525
++put se-output.txt output
+
+# 2021-11-28 16:16:58.132486
++ls output
+
+# 2021-11-28 16:17:21.244752
++mkdir config
+
+# 2021-11-28 16:17:33.937668
++put test_config.json config
+
+# 2021-11-28 16:17:45.690910
++put sample_config.json config
+
+# 2021-11-28 16:18:01.119803
++put config_sample.json config
+
+# 2021-11-28 16:18:04.526624
++ls config
+
+# 2021-11-28 16:18:50.846344
++cat input/mama.txt
+
+# 2021-11-28 16:20:07.892055
++yah --input input/se.txt --output output/se_output.txt --config config/test_config.json --mapper mapper --reducer reducer
+
+# 2021-11-28 16:21:11.394865
++quit
+
+# 2021-11-28 16:23:56.836087
++yah --input input/se.txt --output output/se_output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-11-28 16:24:37.436519
++quit
+
+# 2021-11-28 16:24:40.547589
++yah --input input/se.txt --output output/se_output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-11-28 16:25:51.812814
++exit
+
+# 2021-11-28 16:26:19.381407
++yah --input input/se.txt --output output/se_output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-11-28 16:26:27.279970
++quit
+
+# 2021-11-28 16:28:49.422030
++yah --input input/se.txt --output output/se_output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
