@@ -9,6 +9,8 @@ import json
 import importlib
 from getpass import getuser
 
+from namenode import NameNode
+
 path = os.getcwd()
 mymap=None
 myred=None
@@ -224,6 +226,105 @@ def Pass_To_Mapper(path, offset,block_size):
     #  datanode_size=20 #10 blocks in 1 datanode
     #  sync_period=180 #in miliseconds
     #  namenode_checkpoints="/home/pes2ug19cs413/Desktop/NAMENODES/CHECKPOINTS"
+
+def put(file_name,dir_name,config):
+    f = open(config)
+    data = json.load(f)
+    block_size = data['block_size']  # in bytes for now
+    path_to_datanodes = data['path_to_datanodes'].replace('$USER',getuser())
+    
+    #  print("1",path_to_datanodes)#"/home/pes2ug19cs413/Desktop/DATANODES"
+    # "/home/pes2ug19cs413/Desktop/NAMENODES"
+    path_to_namenodes = data['path_to_namenodes'].replace('$USER',getuser())
+    replication_factor = data['replication_factor']  # 3
+    num_datanodes = data['num_datanodes']  # 5
+    datanode_size = data['datanode_size']  # 10 #10 blocks in 1 datanode
+    sync_period = data['sync_period']  # 180 #in miliseconds
+    namenode_checkpoints = data['namenode_checkpoints'].replace('$USER',getuser())
+    global file_size, number_of_blocks
+    file_size = os.path.getsize(file_name)
+    # print(file_size)
+    number_of_blocks = math.ceil(file_size/(block_size-1))
+
+    if(math.floor(num_datanodes*block_size*datanode_size/replication_factor) >= file_size):
+        #create_datanodes()
+        if not os.path.isdir(path_to_datanodes):
+            os.mkdir(path_to_datanodes)
+        global datanodes_path_list
+        datanodes_path_list = []
+        for i in range(1, num_datanodes+1):
+            datanode_name = "datanode"+str(i)+".txt"
+            datanode_X = path_to_datanodes+str("/")+datanode_name
+            fp = open(datanode_X, "w")
+            datanodes_path_list.append([datanode_X, int(0)])
+            fp.close()
+
+
+        #create_namenode()
+        if not os.path.isdir(path_to_namenodes):
+            os.mkdir(path_to_namenodes)
+        global namenode_path
+        namenode_path = str(path_to_namenodes+"/namenode.txt")
+        fp = open(namenode_path, "w")
+        fp.close()
+
+
+        #NAMENODE()
+        fp_namenode = open(namenode_path, "w")
+        fp_user_file = open(file_name, "r")
+        nnblock = []
+        # fp_namenode.write(file_name+"###"+str(number_of_blocks)+"\n") #Can't Use this and parse the string from the text file so i am commenting it out
+        for i in range(1, number_of_blocks+1):
+            flag = True
+            while(flag):
+                path_offset = random.choice(datanodes_path_list)  # optimize
+                path = path_offset[0]
+                # check if data node is full, put of 1f(offset<=block_size*10)
+                offset = path_offset[1]
+                if(offset <= (block_size*datanode_size)-block_size):
+                    flag = False
+            
+            nnline = str(file_name)+" Block: "+str(i)+" "+str(path) + " "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n"
+            nnblock.append(nnline)
+            # fp_namenode.write(str(file_name)+" Block: "+str(i)+" "+str(path) +
+            #                 " "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n")
+            line = ""
+            for x in range(block_size-1):
+                try:
+                    line = line+fp_user_file.read(1)
+                except:
+                    break
+            offset_new = int(offset)+len(line)+1
+            datanodes_path_list[datanodes_path_list.index(path_offset)] = [
+                path, offset_new]
+            BLOCK(path, line)
+
+            # replication
+            lingo_list = []
+            lingo_list.append(path_offset[0])
+            rep = 1
+            while(rep < replication_factor):
+                path_offset_new = random.choice(datanodes_path_list)
+                if(path_offset_new[0] not in lingo_list):
+                    lingo_list.append(path_offset_new[0])
+                    path_new = path_offset_new[0]
+                    offset_new_x = path_offset_new[1]
+                    if(offset_new_x <= (block_size*datanode_size)-block_size):
+                        BLOCK(path_new, line)
+                        fp_namenode.write(str(file_name)+" Block: "+str(i)+" "+str(path_new) + " " + "offset: " + str(
+                            offset_new_x) + " " + "rep_factor: "+str(rep) + "\n")
+                        offset_new_x = int(offset_new_x)+len(line)+1
+                        datanodes_path_list[datanodes_path_list.index(path_offset_new)] = [
+                            path_new, offset_new_x]
+                        rep += 1
+        # NameNode.put(nnblock)
+        fp_namenode.close()
+        fp_user_file.close()
+        return nnblock
+    else:
+        print("File size too big for HDFS to compute")
+
+
 def yah(file_name,output,config,mapper,reducer):
     #print(1)  
     f = open(config)

@@ -6,6 +6,11 @@ from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 import shutil
 import Hadoop
+from namenode import NameNode
+
+
+t1 = NameNode(daemon = True)
+t1.start()
 
 def help(args):
 
@@ -29,19 +34,21 @@ def help(args):
 
 def cat(args):
 
+    global t1
     if args == []:
         print("cat: no arguments specified")
         return
     for arg in args:
-        temp = subprocess.Popen(['cat', arg], stdout=subprocess.PIPE)
-        try:
-            output = str(temp.communicate())
-            output = output.split('\'')
-            output = output[1].replace('\\r', '').split('\\n')
-            for i in output:
-                print(i)
-        except Exception as e:
-            print(e)
+        # temp = subprocess.Popen(['cat', arg], stdout=subprocess.PIPE)
+        # try:
+        #     output = str(temp.communicate())
+        #     output = output.split('\'')
+        #     output = output[1].replace('\\r', '').split('\\n')
+        #     for i in output:
+        #         print(i)
+        t1.cat(arg)
+        # except Exception as e:
+        #     print(e)
 
 
 """ def put(args):
@@ -63,6 +70,7 @@ def cat(args):
 
 def put(args):
 
+    global t1
     if len(args) == 0:
         print("put: no arguments specified")
         return
@@ -76,7 +84,9 @@ def put(args):
 
     for loc in locs:
         try:
-            shutil.copy(loc, loc2)
+            # shutil.copy(loc, loc2)
+            nnblock = Hadoop.put(loc,loc2,'config/test_config.json')
+            t1.put(nnblock)
         except Exception as e:
             print(e)
 
@@ -228,6 +238,8 @@ def err(fun, args):
     else:
         return val
 
+#config = #reads from config.json
+#dfsbdfb = #reads from dfs_setup_config(config) #open(config("dfs_setup_config"))
 
 absroot = os.getcwd()
 if os.path.isdir(f'{absroot}/logs') == False:
@@ -238,6 +250,8 @@ if str('\\') in root:
     root = root.split('\\')[-1]
 elif '/' in root:
     root = root.split('/')[-1]
+
+
 
 while 1:
     dir = os.getcwd()
