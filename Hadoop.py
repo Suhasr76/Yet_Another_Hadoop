@@ -370,30 +370,45 @@ def yah(file_name,output,config,mapper,reducer):
 
 
         #NAMENODE()
-        fp_namenode = open(namenode_path, "w")
-        fp_user_file = open(file_name, "r")
-        # fp_namenode.write(file_name+"###"+str(number_of_blocks)+"\n") #Can't Use this and parse the string from the text file so i am commenting it out
-        for i in range(1, number_of_blocks+1):
-            flag = True
-            while(flag):
-                path_offset = random.choice(datanodes_path_list)  # optimize
-                path = path_offset[0]
-                # check if data node is full, put of 1f(offset<=block_size*10)
-                offset = path_offset[1]
-                if(offset <= (block_size*datanode_size)-block_size):
-                    flag = False
-            fp_namenode.write("Block: "+str(i)+" "+str(path) +
-                            " "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n")
-            line = ""
-            for x in range(block_size-1):
-                try:
-                    line = line+fp_user_file.read(1)
-                except:
-                    break
-            offset_new = int(offset)+len(line)+1
-            datanodes_path_list[datanodes_path_list.index(path_offset)] = [
-                path, offset_new]
-            BLOCK(path, line)
+    fp_namenode=open(namenode_path,"w")
+    fp_user_file=open(file_name,"r")
+    fp_namenode.write(file_name+"###"+str(number_of_blocks)+"\n")
+    word=""
+    for i in range(1,number_of_blocks+1):
+        flag=True
+        while(flag):
+            path_offset=random.choice(datanodes_path_list)#optimize
+            path=path_offset[0]
+            offset=path_offset[1]#check if data node is full, put of 1f(offset<=block_size*10)
+            if(offset<=(block_size*datanode_size)-block_size):
+                flag=False
+        fp_namenode.write("Block"+str(i)+" "+str(path)+" "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n")
+        line=""
+        for x in range(len(word),block_size-1):
+            try:
+                letter=fp_user_file.read(1)
+                word=word+letter
+                if(x==block_size-1):
+                    letter1=fp_user_file.read(1)
+                    if(letter==" " or letter1==" "):
+                        line=line+word
+                        word=""
+                    else:
+                        for y in range(block_size-1-len(line)):
+                            line=line+"\x00"
+                        word=word+letter1
+                else:
+                    if(letter==" "):
+                        line=line+word
+                        word=""
+
+            except:
+                break
+        while(len(line)<block_size-1):
+            line=line+"\x00"
+        offset_new=int(offset)+len(line)+1
+        datanodes_path_list[datanodes_path_list.index(path_offset)]=[path,offset_new]
+        BLOCK(path,line)
 
     # replication
             lingo_list = []
