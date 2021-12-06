@@ -265,39 +265,54 @@ def put(file_name,dir_name,config):
             os.mkdir(path_to_namenodes)
         global namenode_path
         namenode_path = str(path_to_namenodes+"/namenode.txt")
-        fp = open(namenode_path, "w")
+        fp = open(namenode_path, "a")
         fp.close()
 
 
         #NAMENODE()
-        fp_namenode = open(namenode_path, "w")
-        fp_user_file = open(file_name, "r")
-        nnblock = []
-        # fp_namenode.write(file_name+"###"+str(number_of_blocks)+"\n") #Can't Use this and parse the string from the text file so i am commenting it out
-        for i in range(1, number_of_blocks+1):
-            flag = True
-            while(flag):
-                path_offset = random.choice(datanodes_path_list)  # optimize
-                path = path_offset[0]
-                # check if data node is full, put of 1f(offset<=block_size*10)
-                offset = path_offset[1]
-                if(offset <= (block_size*datanode_size)-block_size):
-                    flag = False
-            
-            nnline = str(file_name)+" Block: "+str(i)+" "+str(path) + " "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n"
-            nnblock.append(nnline)
-            # fp_namenode.write(str(file_name)+" Block: "+str(i)+" "+str(path) +
-            #                 " "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n")
-            line = ""
-            for x in range(block_size-1):
-                try:
-                    line = line+fp_user_file.read(1)
-                except:
-                    break
-            offset_new = int(offset)+len(line)+1
-            datanodes_path_list[datanodes_path_list.index(path_offset)] = [
-                path, offset_new]
-            BLOCK(path, line)
+    fp_namenode=open(namenode_path,"a")
+    fp_user_file=open(file_name,"r")
+
+    word=""
+    letter=""
+    for i in range(1,number_of_blocks+1):
+        flag=True
+        while(flag):
+            path_offset=random.choice(datanodes_path_list)#optimize
+            path=path_offset[0]
+            offset=path_offset[1]#check if data node is full, put of 1f(offset<=block_size*10)
+            if(offset<=(block_size*datanode_size)-block_size):
+                flag=False
+        fp_namenode.write(str(file_name)+" Block"+str(i)+" "+str(path)+" "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n")
+        line=""
+        checker=0
+        for x in range(len(word),block_size-1):
+            try:
+                checker=0
+                letter=fp_user_file.read(1)
+                word=word+letter
+                if(x==block_size-1):
+                    letter1=fp_user_file.read(1)
+                    if(letter==" " or letter1==" "):
+                        line=line+word
+                        word=""
+                    else:
+                        for y in range(block_size-1-len(line)):
+                            line=line+"\x00"
+                        word=word+letter1
+                else:
+                    if(letter==" " or letter=="\n"):
+                        line=line+word
+                        word=""
+                        checker=1
+
+            except:
+                break
+        if(letter=='' and checker==0):
+            line=line+word
+        offset_new=int(offset)+len(line)+1
+        datanodes_path_list[datanodes_path_list.index(path_offset)]=[path,offset_new]
+        BLOCK(path,line)
 
             # replication
             lingo_list = []
@@ -365,15 +380,16 @@ def yah(file_name,output,config,mapper,reducer):
             os.mkdir(path_to_namenodes)
         global namenode_path
         namenode_path = str(path_to_namenodes+"/namenode.txt")
-        fp = open(namenode_path, "w")
+        fp = open(namenode_path, "a")
         fp.close()
 
 
         #NAMENODE()
-    fp_namenode=open(namenode_path,"w")
+    fp_namenode=open(namenode_path,"a")
     fp_user_file=open(file_name,"r")
-    fp_namenode.write(file_name+"###"+str(number_of_blocks)+"\n")
+
     word=""
+    letter=""
     for i in range(1,number_of_blocks+1):
         flag=True
         while(flag):
@@ -382,10 +398,12 @@ def yah(file_name,output,config,mapper,reducer):
             offset=path_offset[1]#check if data node is full, put of 1f(offset<=block_size*10)
             if(offset<=(block_size*datanode_size)-block_size):
                 flag=False
-        fp_namenode.write("Block"+str(i)+" "+str(path)+" "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n")
+        fp_namenode.write(str(file_name)+" Block"+str(i)+" "+str(path)+" "+"offset: "+str(offset)+" "+"rep_factor: 0"+"\n")
         line=""
+        checker=0
         for x in range(len(word),block_size-1):
             try:
+                checker=0
                 letter=fp_user_file.read(1)
                 word=word+letter
                 if(x==block_size-1):
@@ -398,14 +416,15 @@ def yah(file_name,output,config,mapper,reducer):
                             line=line+"\x00"
                         word=word+letter1
                 else:
-                    if(letter==" "):
+                    if(letter==" " or letter=="\n"):
                         line=line+word
                         word=""
+                        checker=1
 
             except:
                 break
-        while(len(line)<block_size-1):
-            line=line+"\x00"
+        if(letter=='' and checker==0):
+            line=line+word
         offset_new=int(offset)+len(line)+1
         datanodes_path_list[datanodes_path_list.index(path_offset)]=[path,offset_new]
         BLOCK(path,line)
@@ -422,7 +441,7 @@ def yah(file_name,output,config,mapper,reducer):
                     offset_new_x = path_offset_new[1]
                     if(offset_new_x <= (block_size*datanode_size)-block_size):
                         BLOCK(path_new, line)
-                        fp_namenode.write("Block: "+str(i)+" "+str(path_new) + " " + "offset: " + str(
+                        fp_namenode.write(str(file_name)+" Block: "+str(i)+" "+str(path_new) + " " + "offset: " + str(
                             offset_new_x) + " " + "rep_factor: "+str(rep) + "\n")
                         offset_new_x = int(offset_new_x)+len(line)+1
                         datanodes_path_list[datanodes_path_list.index(path_offset_new)] = [
