@@ -7,6 +7,7 @@ from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 import shutil
 import Hadoop
 from namenode import NameNode
+import ModuleFiles
 
 
 t1 = NameNode(daemon = True)
@@ -68,27 +69,19 @@ def cat(args):
     print('\n') """
 
 
-def put(args):
+# def put(args):
 
-    global t1
-    if len(args) == 0:
-        print("put: no arguments specified")
-        return
-    elif len(args) == 1:
-        print("put: no target dir mentioned")
-        return
+#     # global t1
+#     # if len(args) == 0:
+#     #     print("put: no arguments specified")
+#     #     return
 
-    locs, loc2 = args[:-1], args[-1]
-    locs = [i.replace('\\', '/') for i in locs]
-    loc2 = loc2.replace('\\', '/')
-
-    for loc in locs:
-        try:
-            # shutil.copy(loc, loc2)
-            nnblock = Hadoop.put(loc,loc2,'config/test_config.json')
-            t1.put(nnblock)
-        except Exception as e:
-            print(e)
+#     # for loc in args:
+#     #     try:
+#     #         nnwrite = .put(loc)
+#     #         t1.put(nnwrite)
+#     #     except Exception as e:
+#     #         print(e)
 
 
 def ls(args):
@@ -194,30 +187,11 @@ def python(args):
             print(i)
 
 
-def yah(args):
-    arguments = ' '.join(args)
-    # print(arguments)
-    l = arguments.split('--')
-    d = {}
-    for i in l[1:]:
-        j = i.split(' ')
-        if '' in j:
-            j.remove('')
-        d[j[0]] = j[1]
-        # Use j[0] to access --input,--output
-        # Use j[1:] to access the value of input, output etc
-        #print(f'{j[0]} - {j[1:]}')
-    # Or here you can just use the dictionary
-    #return d
-    Hadoop.yah(d['input'],d['output'],d['config'],d['mapper'].replace('.py',''),d['reducer'].replace('.py',''))
-    return d
-
 
 comm = {
     'help': help,
     'cd': cd,
     'cat': cat,
-    'put': put,
     'ls': ls,
     'rm': rm,
     'rmdir': rmdir,
@@ -226,7 +200,6 @@ comm = {
     'exit': exit,
     'python': python,
     'python3': python,
-    'yah': yah
 }
 
 
@@ -259,6 +232,7 @@ while 1:
         dir = dir.split('\\')[-1]
     elif '/' in dir:
         dir = dir.split('/')[-1]
+    print(t1.is_alive())
     user_input = prompt(dir+'>', auto_suggest=AutoSuggestFromHistory(),
                         history=FileHistory(f'{absroot}/logs/history.txt'))
     try:
