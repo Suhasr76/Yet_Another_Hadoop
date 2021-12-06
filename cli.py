@@ -5,7 +5,6 @@ import subprocess
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 import shutil
-import Hadoop
 from namenode import NameNode
 import ModuleFiles
 
