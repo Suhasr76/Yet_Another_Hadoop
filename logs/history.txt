@@ -901,3 +901,543 @@
 
 # 2021-11-28 16:28:49.422030
 +yah --input input/se.txt --output output/se_output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-08 17:52:04.633262
++put input/sam.txt test
+
+# 2021-12-08 17:54:55.119894
++yah --input input/sam.txt --output output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-08 17:55:04.359115
++yah --input test/sam.txt --output output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-08 17:56:37.659630
++quit
+
+# 2021-12-08 17:56:49.172385
++dfs -ls
+
+# 2021-12-08 17:56:58.215917
++dfs l
+
+# 2021-12-08 17:58:29.606285
++quit
+
+# 2021-12-08 17:58:31.916231
++dfs l
+
+# 2021-12-08 17:58:37.345500
++dfs ls
+
+# 2021-12-08 17:59:15.816510
++dfs l
+
+# 2021-12-08 17:59:17.598035
++quit
+
+# 2021-12-08 17:59:19.764207
++dfs l
+
+# 2021-12-08 17:59:23.490369
++dfs l test
+
+# 2021-12-08 17:59:49.916243
++put input/se.txt testing
+
+# 2021-12-08 18:00:09.186534
++yah --input testing/se.txt --output output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-08 18:01:33.933520
++quit
+
+# 2021-12-08 18:01:49.325358
++put input/crypto.txt test
+
+# 2021-12-08 18:02:10.540015
++yah --input test/crypto.txt --output output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-08 18:02:14.334248
++quit
+
+# 2021-12-08 18:19:20.185274
++put input/crypto.txt test
+
+# 2021-12-08 18:22:04.648687
++quit
+
+# 2021-12-08 18:22:06.855795
++put input/crypto.txt test
+
+# 2021-12-08 18:22:25.009453
++dfs start config/test_config.json
+
+# 2021-12-08 18:22:56.060187
++put input/crypto.txt test
+
+# 2021-12-08 18:23:09.695718
++put input/se.txt test
+
+# 2021-12-08 18:23:30.505374
++yah --input test/se.txt --output output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-08 18:23:39.055547
++dfs l
+
+# 2021-12-08 18:23:42.703991
++dfs l test
+
+# 2021-12-08 18:23:47.831929
++dfs stop
+
+# 2021-12-08 18:23:58.629058
++quit
+
+# 2021-12-08 18:24:06.886719
++put input/crypto.txt test
+
+# 2021-12-08 18:24:34.753152
++dfs start config/test_config.json
+
+# 2021-12-08 18:24:40.281896
++put input/crypto.txt test
+
+# 2021-12-08 18:25:01.374602
++dfs stop
+
+# 2021-12-08 18:25:35.458725
++dfs start config/test_config.json
+
+# 2021-12-08 18:25:47.247935
++put input/crypto.txt test
+
+# 2021-12-08 18:26:27.910004
++dfs start config/test_config.json
+
+# 2021-12-08 18:26:33.922542
++put input/crypto.txt test
+
+# 2021-12-08 18:26:49.094691
++dfs stop
+
+# 2021-12-08 18:26:57.423597
++dfs start config/test_config.json
+
+# 2021-12-08 18:28:06.529257
++quit
+
+# 2021-12-08 18:28:15.875921
++dfs start config/test2.json
+
+# 2021-12-08 18:28:20.033692
++put input/crypto.txt test
+
+# 2021-12-08 18:29:05.835023
++dfs top
+
+# 2021-12-08 18:29:08.161473
++dfs stop
+
+# 2021-12-08 18:30:03.532431
++quit
+
+# 2021-12-08 18:30:21.241083
++dfs start config/test2.json
+
+# 2021-12-08 18:30:30.067216
++put input/se test
+
+# 2021-12-08 18:31:03.675364
++yah --input test/se.txt --output output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-08 18:31:21.757977
++yah --input test/se.txt --output output.txt --config config/test2.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-08 18:31:48.695933
++cat test/se.txt
+
+# 2021-12-08 18:32:13.740793
++yah --input test/crypto.txt --output output.txt --config config/test2.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-08 18:32:22.015110
++put input/se tes
+
+# 2021-12-08 18:33:21.621865
++dfs top
+
+# 2021-12-08 18:33:25.686360
++dfs stop
+
+# 2021-12-08 18:34:25.501880
++quit
+
+# 2021-12-08 18:35:21.144634
++dfs start config/test2.json
+
+# 2021-12-08 18:35:25.156720
++dfs stop
+
+# 2021-12-08 18:35:32.701890
++quit
+
+# 2021-12-09 10:04:58.127554
++put input/se tes
+
+# 2021-12-09 10:05:18.842091
++dfs start config/test_config.json
+
+# 2021-12-09 10:05:50.444152
++put input/se tes
+
+# 2021-12-09 10:06:43.081211
++dfs stop
+
+# 2021-12-09 10:06:50.781393
++quit
+
+# 2021-12-09 10:07:03.696858
++dfs start config/test_config.json
+
+# 2021-12-09 10:07:18.105355
++put input/se tes
+
+# 2021-12-09 10:07:31.366578
++quit
+
+# 2021-12-09 10:07:43.383490
++dfs start config/test2.json
+
+# 2021-12-09 10:07:51.701986
++put input/se tes
+
+# 2021-12-09 10:08:34.607812
++quit
+
+# 2021-12-09 10:08:50.219679
++dfs start config/test_config.json
+
+# 2021-12-09 10:09:13.703418
++put input/se.txt tes
+
+# 2021-12-09 10:10:13.402160
++yah --input tes/se.txt --output output.txt --config config/test2.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-09 10:10:54.996204
++yah --input tes/se.txt --output output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-09 10:11:44.646214
++put input/se.txt tes
+
+# 2021-12-09 10:11:53.980997
++dfs stop
+
+# 2021-12-09 10:12:44.133382
++quit
+
+# 2021-12-09 10:12:57.086535
++dfs start config/test_config.json
+
+# 2021-12-09 10:13:06.073552
++put input/sam.txt test
+
+# 2021-12-09 10:13:58.086935
++yah --input test/sam.txt --output output.txt --config config/test_config.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-09 10:14:31.383466
++dfs ls
+
+# 2021-12-09 10:14:44.085487
++dfs ls test
+
+# 2021-12-09 10:16:40.662179
++dfs stop
+
+# 2021-12-09 10:16:58.162618
++dfs start config/test2.json
+
+# 2021-12-09 10:17:05.296130
++put input/sam.txt test
+
+# 2021-12-09 10:17:16.005375
++dfs ls
+
+# 2021-12-09 10:17:20.762811
++dfs ls test
+
+# 2021-12-09 10:17:32.728056
++yah --input test/sam.txt --output output.txt --config config/test2.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-09 10:18:51.381555
++dfs stop
+
+# 2021-12-09 10:18:57.569806
++quit
+
+# 2021-12-09 10:19:01.631619
++ls
+
+# 2021-12-09 10:20:35.142772
++put input/sam.txt test
+
+# 2021-12-09 10:21:29.606370
++dfs start config/test2.json
+
+# 2021-12-09 10:21:38.849464
++put input/sam.txt test
+
+# 2021-12-09 10:22:52.957735
++put input/se.txt sample
+
+# 2021-12-09 10:26:24.133041
++yah --input sample/se.txt --output output.txt --config config/test2.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-09 10:27:15.960531
++dfs ls
+
+# 2021-12-09 10:27:47.124888
++ls
+
+# 2021-12-09 10:28:01.114027
++dfs stop
+
+# 2021-12-09 10:28:08.074483
++put input/se.txt sample
+
+# 2021-12-09 10:28:15.082508
++dfs ls
+
+# 2021-12-09 10:28:35.768414
++cat test/se.txt
+
+# 2021-12-09 10:29:19.101250
++dfs start config/test2.json
+
+# 2021-12-09 10:29:26.855982
++cat sample/se.txt
+
+# 2021-12-09 10:29:30.379975
++ls
+
+# 2021-12-09 10:29:33.696144
++dfs ls
+
+# 2021-12-09 10:29:44.622903
++cat test/se.txt
+
+# 2021-12-09 10:29:53.629998
++dfs ls test
+
+# 2021-12-09 10:30:00.744869
++cat test/sam.txt
+
+# 2021-12-09 10:30:14.714860
++quit
+
+# 2021-12-09 10:39:56.729692
++dfs start config/test2.json
+
+# 2021-12-09 10:40:01.094231
++dfs ls test
+
+# 2021-12-09 10:40:09.647494
++cat test/sam.txt
+
+# 2021-12-09 11:01:09.219365
++dfs start config/test2.json
+
+# 2021-12-09 11:01:15.507111
++dfs ls
+
+# 2021-12-09 11:01:31.083041
++put input/se.txt sample
+
+# 2021-12-09 11:01:34.841224
++dfs ls
+
+# 2021-12-09 11:06:41.943662
++ls
+
+# 2021-12-09 11:07:22.441167
++quit
+
+# 2021-12-09 11:07:30.209500
++dfs start config/test2.json
+
+# 2021-12-09 11:07:33.494583
++dfs ls
+
+# 2021-12-09 11:08:13.742533
++yah --input sample/se.txt --output output.txt --config config/test2.json --mapper mapper.py --reducer reducer.py
+
+# 2021-12-09 11:08:38.654249
++dfs ls
+
+# 2021-12-09 11:16:54.330394
++quit
+
+# 2021-12-09 11:17:04.535411
++dfs start config/test2.json
+
+# 2021-12-09 11:17:10.980302
++dfs ls
+
+# 2021-12-09 11:18:53.136990
++dfs ls sample
+
+# 2021-12-09 11:21:15.620468
++quit
+
+# 2021-12-09 11:21:21.690220
++dfs start config/test2.json
+
+# 2021-12-09 11:21:50.217532
++cat sample/se.txt
+
+# 2021-12-09 11:40:00.845806
++quit
+
+# 2021-12-09 11:40:07.111221
++dfs start
+
+# 2021-12-09 11:40:09.443015
++dfs startls
+
+# 2021-12-09 11:40:18.228629
++dfs start config/test2.json
+
+# 2021-12-09 11:40:25.806818
++dfs ls
+
+# 2021-12-09 11:40:32.951837
++dfs ls sample
+
+# 2021-12-09 11:48:21.694847
++dfs cat sample/se.txt
+
+# 2021-12-09 11:49:38.403585
++quit
+
+# 2021-12-09 11:49:43.763242
++dfs start config/test2.json
+
+# 2021-12-09 11:49:46.311724
++dfs cat sample/se.txt
+
+# 2021-12-09 11:53:19.104036
++quit
+
+# 2021-12-09 11:53:23.838432
++dfs start config/test2.json
+
+# 2021-12-09 11:53:25.607809
++dfs cat sample/se.txt
+
+# 2021-12-09 11:54:00.218865
++quit
+
+# 2021-12-09 11:54:03.066488
++dfs start config/test2.json
+
+# 2021-12-09 11:54:04.255517
++dfs cat sample/se.txt
+
+# 2021-12-09 11:55:50.827518
++quit
+
+# 2021-12-09 11:55:53.822552
++dfs start config/test2.json
+
+# 2021-12-09 11:55:54.941824
++dfs cat sample/se.txt
+
+# 2021-12-09 11:57:23.738315
++quit
+
+# 2021-12-09 11:57:26.812120
++dfs start config/test2.json
+
+# 2021-12-09 11:57:27.750486
++dfs cat sample/se.txt
+
+# 2021-12-09 11:57:52.566251
++qiut
+
+# 2021-12-09 11:57:55.114333
++quit
+
+# 2021-12-09 11:58:00.571240
++dfs start config/test2.json
+
+# 2021-12-09 11:58:02.315575
++dfs cat sample/se.txt
+
+# 2021-12-09 11:58:48.908485
++quit
+
+# 2021-12-09 11:58:51.821063
++dfs start config/test2.json
+
+# 2021-12-09 11:58:53.296669
++dfs cat sample/se.txt
+
+# 2021-12-09 12:01:04.924372
++quit
+
+# 2021-12-09 12:11:31.682661
++ld
+
+# 2021-12-09 12:11:33.123769
++ls
+
+# 2021-12-09 12:11:46.745824
++cat README.md
+
+# 2021-12-09 12:25:41.126798
++quit
+
+# 2021-12-09 12:26:06.640365
++quiy
+
+# 2021-12-09 12:26:09.093801
++quit
+
+# 2021-12-09 12:27:12.248697
++help
+
+# 2021-12-09 12:27:19.572602
++ls
+
+# 2021-12-09 12:27:27.468557
++cat README.md
+
+# 2021-12-09 12:28:12.274543
++dfs cat sample/se.txt
+
+# 2021-12-09 12:28:19.510832
++dfs ls
+
+# 2021-12-09 12:28:40.094562
++dfs start config/test2.json
+
+# 2021-12-09 12:28:51.427224
++dfs ls
+
+# 2021-12-09 12:30:09.865262
++dfs ls sample
+
+# 2021-12-09 12:30:27.494720
++put input/se.txt sample
+
+# 2021-12-09 12:30:53.304188
++put input/sam.txt test
+
+# 2021-12-09 12:30:57.684262
++dfs ls
+
+# 2021-12-09 12:31:17.970578
++dfs ls test
+
+# 2021-12-09 12:31:53.382323
++put input/se.txt sample
+
+# 2021-12-09 12:56:30.759734
++quit

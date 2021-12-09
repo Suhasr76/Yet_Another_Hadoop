@@ -15,10 +15,11 @@ import glob
 import multiprocessing
 import string
 import sys
+import importlib
 # sys.path.insert(1,'/Users/jeshwanth/Desktop')
-import mapper
+#import mapper
 # sys.path.insert(1,'/Users/jeshwanth/Desktop')
-import reducer
+#import reducer
 
 class MapReduce(object):
     
@@ -90,8 +91,8 @@ datanodes_path_list = []
 #step1
 #get input file, calculate size of file, calculate no. of blocks required
 def compute_file_size():
-    global file_size,number_of_blocks,file_name
-    file_name=input("enter the file name along with extension")
+    global file_size,number_of_blocks,file_name,given_input
+    file_name=using_input#input("enter the file name along with extension")
     file_size=os.path.getsize(file_name)
     number_of_blocks=math.ceil(file_size/(block_size-1))
 
@@ -105,7 +106,7 @@ def create_datanodes():
     for i in range(1,num_datanodes+1):
         datanode_name="datanode"+str(i)+".txt"
         datanode_X=path_to_datanodes+str("/")+datanode_name
-        fp=open(datanode_X,"a")
+        fp=open(datanode_X,"w")
         datanodes_path_list.append([datanode_X,int(0)])
         fp.close()
 
@@ -121,7 +122,7 @@ def create_namenode():
 #handle Namenode and call BLOCK within
 def NAMENODE():
 
-    fp_namenode=open(namenode_path,"a")
+    fp_namenode=open(namenode_path,"w")
     fp_user_file=open(file_name,"r")
 
     word=""
@@ -161,7 +162,8 @@ def NAMENODE():
                 break
         if(letter=='' and checker==0):
             line=line+word
-        fp_namenode.write(str(file_name) +" "+ "Block: " + str(i) + " " + str(path) + " " + "offset: " + str(offset) + " " + "rep_factor: 0" +" "+ "block_length: " +str(len(line))+"\n");
+        global to_folder2    
+        fp_namenode.write(str(to_folder2+'/'+file_name.split('/')[-1]) +" "+ "Block: " + str(i) + " " + str(path) + " " + "offset: " + str(offset) + " " + "rep_factor: 0" +" "+ "block_length: " +str(len(line))+"\n");
         offset_new=int(offset)+len(line)+1
         datanodes_path_list[datanodes_path_list.index(path_offset)]=[path,offset_new]
         BLOCK(path,line)
@@ -178,7 +180,7 @@ def NAMENODE():
                 offset_new_x=path_offset_new[1]
                 if(offset_new_x<=(block_size*datanode_size)-block_size):
                     BLOCK(path_new,line)
-                    fp_namenode.write(str(file_name)+" "+"Block: "+str(i)+" "+str(path_new) +" "+ "offset: " + str(offset_new_x)+" "+ "rep_factor: "+str(rep)+ " " +"block_length: "+str(len(line))+ "\n")
+                    fp_namenode.write(str(to_folder2+'/'+file_name.split('/')[-1])+" "+"Block: "+str(i)+" "+str(path_new) +" "+ "offset: " + str(offset_new_x)+" "+ "rep_factor: "+str(rep)+ " " +"block_length: "+str(len(line))+ "\n")
                     offset_new_x=int(offset_new_x)+len(line)+1
                     datanodes_path_list[datanodes_path_list.index(path_offset_new)] = [path_new, offset_new_x]
                     rep+=1
@@ -189,23 +191,17 @@ def NAMENODE():
 
     fp_namenode.close()
     fp_user_file.close()
-def Mapper(line):#Mapper
-   
-    
-      
-    return mapper.doo(line);
- 
-      
 
- 
-  
+def Mapper(line):  # Mapper
+    global mymap
+    return mymap.doo(line)
+    #return mapper.doo(line)
 
-    
+def Reducer(item):  # Reducer
+    global myred
+    return(myred.doo(item))
+    #return reducer.doo(item)
 
-
-def Reducer(item):#Reducer
-    
-    return(reducer.doo(item));
     
 def Pass_To_Mapper(path,offset,end_offset):
   
@@ -234,68 +230,161 @@ def BLOCK(path,line):
     fp_datanode_x.close()
 
 #call only if HDFS space is bigger than the file to be stored
-if __name__ == '__main__':
- compute_file_size()
- if(math.floor(num_datanodes*block_size*datanode_size/replication_factor)>=file_size):
-    create_datanodes()
-    create_namenode()
-    NAMENODE()
- else:
-    print("File size too big for HDFS to compute")
- with open(path_to_namenodes+'namenode.txt', 'r') as fp:
-    for countt, line in enumerate(fp):
-        pass
-    print(countt)
- mappper = MapReduce(Mapper, Reducer)#returning an oject of the class to mappper
- Width = 6;#After removing irrelevent Widthords(Characters) the size of the Widthidth required
- Matrix = [[0 for x in range(Width)] for y in range(countt+1)]
- 
- try:
-      file1 = open(path_to_namenodes+'namenode.txt', 'r')
- except OSError:
-    print("Could not open NameNode ....Terminating");
-    sys.exit("File not Open Error");
-
- Lines = file1.readlines();
- count = 0;
- for line in Lines:
-    line = line.strip();
-    line_array = line.split(' ');
-    line_array.pop(1);
-    line_array.pop(3);
-    line_array.pop(4);
-    line_array.pop(5);
-
-    Matrix[count] = line_array;
-    count += 1;
-
- Block_Flag=[];
-#print(Block_Flag)
- Accessed_Blocks =[]
- input=[];
-#print(Matrix[0][0]);
- global file_name
- filename = file_name
- for i in range(countt):
-  if(filename == Matrix[i][0]):
-  #print(Matrix[i][0])
-   if(int(Matrix[i][1]) in Accessed_Blocks ):
-     continue;
-   elif((int(Matrix[i][1]) not in Accessed_Blocks)):
-     Accessed_Blocks.append(int(Matrix[i][1]));
-     
-     input.append(Pass_To_Mapper(Matrix[i][2],Matrix[i][3],Matrix[i][5]));
- word_counts = mappper(input)
-#  if(len(Accessed_Blocks) < number_of_blocks):
-#      sys.exit("Block Missing even though replication is used,Reasons:-Block maybe missing (or) Block is corrupt (Or) Read write premissions are not given");
-     #Calling the class object which in turn invokes __call__ Function
- 
+#if __name__ == '__main__':
+def yah(given_input,output,given_config,mapper,reducer):
     
- longest = max(len(word) for word, count in word_counts)#For having symmetrical space all through the output by selecting the longest word
- for word, count in word_counts:#Iterating through each tuple
-     print('%-*s: %5s' % (longest+1, word, count));#The "%-*s" indicates a left trailing space whose value will be passes by longest+1 in the print statement
+    global using_input
+    using_input=given_input
+    config = given_config#"config/test_config.json"
+    f = open(config)
+    data = json.load(f)
+    global block_size,path_to_datanodes,path_to_namenodes,replication_factor,num_datanodes,datanode_size,datanodes_path_list
+    block_size = data['block_size']
+    path_to_datanodes = data['path_to_datanodes'].replace('$USER',getuser())
+    if not os.path.isdir(path_to_datanodes):
+        os.mkdir(path_to_datanodes)
+    path_to_namenodes = data['path_to_namenodes'].replace('$USER',getuser())
+    if not os.path.isdir(path_to_namenodes):
+        os.mkdir(path_to_namenodes)
+    replication_factor=3
+    num_datanodes = data['num_datanodes']  # 5
+    datanode_size = data['datanode_size']  # 10 #10 blocks in 1 datanode
+    sync_period = data['sync_period']  # 180 #in miliseconds
+    namenode_checkpoints = data['namenode_checkpoints'].replace('$USER',getuser())
+    fs_path=data["fs_path"].replace('$USER',getuser())
+    datanodes_path_list = []
+    vir=fs_path+'virtual_path.txt'
+    if os.path.isfile(vir):
+        temp=open(vir,'r')
+        #print(temp)
+        files=temp.readlines()
+        temp.close()
+        #print(files,given_input)
+        if given_input+'\n' in files:
+            
+            # compute_file_size()
+            # if(math.floor(num_datanodes*block_size*datanode_size/replication_factor)>=file_size):
+            #     create_datanodes()
+            #     create_namenode()
+            #     NAMENODE()
+            # else:
+            #     print("File size too big for HDFS to compute")
+            with open(path_to_namenodes+'namenode.txt', 'r') as fp:
+                for countt, line in enumerate(fp):
+                    pass
+                #print(countt)
+            global mymap,myred
+            mymap=importlib.import_module(mapper)
+            myred=importlib.import_module(reducer)    
+            mappper = MapReduce(Mapper, Reducer)#returning an oject of the class to mappper
+            Width = 6;#After removing irrelevent Widthords(Characters) the size of the Widthidth required
+            Matrix = [[0 for x in range(Width)] for y in range(countt+1)]
+            #print('going')
+            try:
+                file1 = open(path_to_namenodes+'namenode.txt', 'r')
+            except OSError:
+                print("Could not open NameNode ....Terminating");
+                sys.exit("File not Open Error");
 
+            Lines = file1.readlines();
+            count = 0;
+            for line in Lines:
+                line = line.strip();
+                line_array = line.split(' ');
+                line_array.pop(1);
+                line_array.pop(3);
+                line_array.pop(4);
+                line_array.pop(5);
 
+                Matrix[count] = line_array;
+                #print(line_array)
+                count += 1;
+            #print(Matrix)
+            Block_Flag=[];
+            #print(Block_Flag)
+            Accessed_Blocks =[]
+            input=[];
+            #print(Matrix[0][0]);
+            #global file_name
+            #filename = file_name
+            #print(countt)
+            for i in range(countt):
+                    #print(Matrix[i][0])
+                #if(filename == Matrix[i][0]):
+                #print(Matrix[i][0])
+                    if(int(Matrix[i][1]) in Accessed_Blocks ):
+                        continue;
+                    elif((int(Matrix[i][1]) not in Accessed_Blocks)):
+                        Accessed_Blocks.append(int(Matrix[i][1]));
+                        
+                        input.append(Pass_To_Mapper(Matrix[i][2],Matrix[i][3],Matrix[i][5]));
+            #print(input)
+            word_counts = mappper(input)
+        #  if(len(Accessed_Blocks) < number_of_blocks):
+        #      sys.exit("Block Missing even though replication is used,Reasons:-Block maybe missing (or) Block is corrupt (Or) Read write premissions are not given");
+            #Calling the class object which in turn invokes __call__ Function
+        
+            f=open(output,'w')
+            longest = max(len(word) for word, count in word_counts)#For having symmetrical space all through the output by selecting the longest word
+            for word, count in word_counts:#Iterating through each tuple
+                print('%-*s: %5s' % (longest+1, word, count));#The "%-*s" indicates a left trailing space whose value will be passes by longest+1 in the print statement
+                f.write('%-*s: %5s\n' % (longest+1, word, count))
+            f.close()  
+        else:
+            print(f"yah: error '{given_input}' not present in DFS.")          
+#yah('test/sam.txt','output.txt','config/test_config.json','mapper','reducer')
    #mappper = MapReduce(Mapper, Reducer)#returning a class object to mapper
-   
+
+def put(from_file,to_folder,given_config):
+    global using_input,to_folder2
+    to_folder2=to_folder
+    using_input=from_file
+    config = given_config#"config/test_config.json"
+    f = open(config)
+    data = json.load(f)
+    global block_size,path_to_datanodes,path_to_namenodes,replication_factor,num_datanodes,datanode_size,datanodes_path_list
+    block_size = data['block_size']
+    path_to_datanodes = data['path_to_datanodes'].replace('$USER',getuser())
+    if not os.path.isdir(path_to_datanodes):
+        os.mkdir(path_to_datanodes)
+    path_to_namenodes = data['path_to_namenodes'].replace('$USER',getuser())
+    if not os.path.isdir(path_to_namenodes):
+        os.mkdir(path_to_namenodes)
+    replication_factor=3
+    num_datanodes = data['num_datanodes']  # 5
+    datanode_size = data['datanode_size']  # 10 #10 blocks in 1 datanode
+    sync_period = data['sync_period']  # 180 #in miliseconds
+    namenode_checkpoints = data['namenode_checkpoints'].replace('$USER',getuser())
+    fs_path=data['fs_path'].replace('$USER',getuser())
+    datanodes_path_list = []
+    compute_file_size()
+    if(math.floor(num_datanodes*block_size*datanode_size/replication_factor)>=file_size):
+        if not os.path.isdir(fs_path):
+            l=fs_path.split('/')
+            for i in range(2,len(l)):
+                #print('/'+'/'.join(l[1:i]))
+                if not os.path.isdir('/'+'/'.join(l[1:i])):
+                #print('making')
+                    os.mkdir('/'+'/'.join(l[1:i])) 
+            #os.mkdir(fs_path)
+        vir=fs_path+'/virtual_path.txt'
+        if not os.path.isfile(vir):
+            f=open(vir,'w')
+            f.close()
+        f=open(vir,'r')
+        files=f.readlines()
+        f.close()    
+        f=open(vir,'w')
+        if not (to_folder+'/'+from_file.split('/')[-1]+'\n') in files:
+            f.write(to_folder+'/'+from_file.split('/')[-1]+'\n')
+        else:
+            print(f'put: error - file "{from_file}" already in DFS')    
+        f.close() 
+        create_datanodes()
+        create_namenode()
+        NAMENODE()
+               
+    else:
+        print("File size too big for HDFS to compute")    
+#put('input/crypto.txt','test1','config/test_config.json')           
 

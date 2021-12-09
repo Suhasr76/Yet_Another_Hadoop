@@ -1,3 +1,4 @@
+from enum import Flag
 import os
 from sys import platform
 from prompt_toolkit import prompt
@@ -6,12 +7,17 @@ from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 import shutil
 from namenode import NameNode
-import ModuleFiles
+import for_put
+import json
+from getpass import getuser
+import time
 
-
-t1 = NameNode(daemon = True)
-t1.start()
-
+#t1 = NameNode(daemon = True)
+#t1.start()
+global dfs_flag
+dfs_flag=True
+config= "config/config_sample.json"
+t1 = None
 def help(args):
 
     if args == []:
@@ -39,48 +45,20 @@ def cat(args):
         print("cat: no arguments specified")
         return
     for arg in args:
-        # temp = subprocess.Popen(['cat', arg], stdout=subprocess.PIPE)
-        # try:
-        #     output = str(temp.communicate())
-        #     output = output.split('\'')
-        #     output = output[1].replace('\\r', '').split('\\n')
-        #     for i in output:
-        #         print(i)
-        t1.cat(arg)
-        # except Exception as e:
-        #     print(e)
+        temp = subprocess.Popen(['cat', arg], stdout=subprocess.PIPE)
+        try:
+            output = str(temp.communicate())
+            output = output.split('\'')
+            output = output[1].replace('\\r', '').split('\\n')
+            for i in output:
+                print(i)
+        # t1.cat(arg)
+        except Exception as e:
+            print(e)
 
 
-""" def put(args):
-
-    cp = 'cp '
-    if str(args[0])[0] == '-':
-        cp = cp+args[0]+' '
-    for i in args[:-1]:
-        if i != '-r':
-            command = cp+str(i) + ' ' + str(args[-1])
-            try:
-                os.system(command)
-
-            except Exception as e:
-                l = e.split('\n')
-                print(l[0])
-    print('\n') """
 
 
-# def put(args):
-
-#     # global t1
-#     # if len(args) == 0:
-#     #     print("put: no arguments specified")
-#     #     return
-
-#     # for loc in args:
-#     #     try:
-#     #         nnwrite = .put(loc)
-#     #         t1.put(nnwrite)
-#     #     except Exception as e:
-#     #         print(e)
 
 
 def ls(args):
@@ -185,8 +163,90 @@ def python(args):
             count += 1
             print(i)
 
+def yah(args):
+    if not dfs_flag:
+        arguments = ' '.join(args)
+        # print(arguments)
+        l = arguments.split('--')
+        d = {}
+        for i in l[1:]:
+            j = i.split(' ')
+            if '' in j:
+                j.remove('')
+            d[j[0]] = j[1]
+        #print(d)    
+        for_put.yah(d['input'],d['output'],d['config'],d['mapper'].replace('.py',''),d['reducer'].replace('.py',''))
+        #return d
+    else:
+        print("DFS terminated..\nStart the dfs to run the 'dfs yah' command")    
 
+def put(args):
+    if not dfs_flag:
+        if len(args) == 0:
+            print("put: no arguments specified")
+            return
+        elif len(args) == 1:
+            print("put: no target dir mentioned")
+            return
+        from_file,to_folder=args[0],args[1]
+        global config
+        #print(f"Using Config file - '{config}'..")
+        for_put.put(from_file,to_folder,config)
+    else:
+        print("DFS terminated..\nStart the dfs to run the 'dfs put' command")        
 
+def dfs(args):
+    global config,dfs_flag,t1
+    if len(args)==2 and args[0] in ['Start','start']:
+        t1 = NameNode(daemon = True,conf=config)
+        t1.start()
+        dfs_flag=False
+        #global config
+        config=args[1]
+        print(f"DFS started according to '{config}'...\n")
+    elif args[0] in ['ls','l','-ls','-l']:
+        #global config
+        if not dfs_flag:
+            # f=open('config/test_config.json')
+            f=open(config)
+            data=json.load(f)
+            fs_path=data['fs_path'].replace('$USER',getuser())
+            vir=fs_path+'virtual_path.txt'
+            file=open(vir,'r')
+            k=file.readlines()
+            l=[]
+            if len(args)==1:
+                for i in k:
+                    if '/' in i:
+                        if i.split('/')[0] not in l:
+                            l.append(i.split('/')[0])
+                            print('./'+i.split('/')[0])
+            else:
+                for i in k:
+                    if '/' in i:
+                        temp=i.split('/')
+                        if temp[0]==args[1]:
+                            if len(temp)>2:
+                                print('./'+temp[1])
+                            else:
+                                print(temp[1])   
+        else:
+            print("DFS terminated..\nStart the dfs to run the 'dfs ls/l' command")                                         
+    elif len(args)==1 and args[0] in ['Stop','stop']:
+        if not dfs_flag:
+            dfs_flag=True
+            print('Terminating DFS..')
+            time.sleep(1)
+            print('DFS Terminated')
+        else:
+            print('Error: DFS not yet started..')    
+        
+    elif args[0] in ["cat","Cat"]:
+        if not dfs_flag:
+            for i in args[1:]:
+                t1.cat(i)
+    else:
+        print('Wrong Command')
 comm = {
     'help': help,
     'cd': cd,
@@ -199,6 +259,9 @@ comm = {
     'exit': exit,
     'python': python,
     'python3': python,
+    'yah':yah,
+    'put':put,
+    'dfs':dfs
 }
 
 
@@ -231,7 +294,7 @@ while 1:
         dir = dir.split('\\')[-1]
     elif '/' in dir:
         dir = dir.split('/')[-1]
-    print(t1.is_alive())
+    #print(t1.is_alive())
     user_input = prompt(dir+'>', auto_suggest=AutoSuggestFromHistory(),
                         history=FileHistory(f'{absroot}/logs/history.txt'))
     try:
