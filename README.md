@@ -3,6 +3,7 @@
 ## Big Data Project of **Team BD2_154_335_413_908**
 In this project, we created a File-System that mimics **Hadoop Distributed File System** (HDFS) using Python.
 
+#### [Project Specification](https://cloud-computing-big-data.github.io/yah)
 
 ### Team
 
