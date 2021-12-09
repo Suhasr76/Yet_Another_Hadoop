@@ -6,11 +6,11 @@ import sys
 
 class NameNode(threading.Thread):
 
-	def __init__(self, conf="./config/test_config.json",*args, **kwargs):
+	def __init__(self, config="./config/test_config.json",*args, **kwargs):
 		
 		super(NameNode, self).__init__(*args,**kwargs)
 		self._stop = threading.Event()
-		with open(conf) as f:
+		with open(config) as f:
 			data  = json.load(f)
 			self.path = data['path_to_namenodes'].replace('$USER',getuser())+"namenode.txt"
 			try:
@@ -33,7 +33,7 @@ class NameNode(threading.Thread):
 			print("writing to namenode...done.")
 			
 	def fetch(self, name):
-		print(name)
+		#print(name)
 		with open(self.path, 'r') as fp:
 				for countt, line in enumerate(fp):
 						pass
@@ -73,23 +73,21 @@ class NameNode(threading.Thread):
 			# print("lol")
 			for i in f.readlines():
 				s = i.split(' ')
-				print
-				if s[0] != name or int(s[7]) != 0: continue
+				if s[0] != name: continue
 				try:
 					f2 = open(s[3],"r")
 					# pos = int(s[-1][0])
-					pos = int(s[5])
+					pos = int(s[-3])
 					# print(pos)
 					f2.seek(pos)
 					print(f2.readline().rstrip('\n'))
-					f2.close()
+					f2.close
 				except Exception as e: print(e)
-			print()
 		pass
 
 	def run(self):
 		count = 0
-		print(self.path)
+		#print(self.path)
 			#initialize
 		with open(self.path) as f:
 			while True:
